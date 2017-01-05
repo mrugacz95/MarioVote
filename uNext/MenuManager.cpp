@@ -195,6 +195,8 @@ void MenuManager::resetActiveOptionID(gameState ID) {
 		case ePasue:
 			oPauseMenu->activeMenuOption = 0;
 			break;
+		default:
+			break;
 	}
 }
 

@@ -137,13 +137,13 @@ void CCore::InputMenu() {
 		switch(mainEvent->key.keysym.sym) {
 			case SDLK_s: case SDLK_DOWN:
 				if(!keyMenuPressed) {
-					CCFG::getMM()->keyPressed(2);
+					CCFG::getMM()->keyPressed(SDLK_DOWN); //2
 					keyMenuPressed = true;
 				}
 				break;
 			case SDLK_w: case SDLK_UP:
 				if(!keyMenuPressed) {
-					CCFG::getMM()->keyPressed(0);
+					CCFG::getMM()->keyPressed(SDLK_UP); //0
 					keyMenuPressed = true;
 				}
 				break;
@@ -161,16 +161,23 @@ void CCore::InputMenu() {
 				break;
 			case SDLK_LEFT: case SDLK_d:
 				if(!keyMenuPressed) {
-					CCFG::getMM()->keyPressed(3);
+					CCFG::getMM()->keyPressed(SDLK_LEFT); //3
 					keyMenuPressed = true;
 				}
 				break;
 			case SDLK_RIGHT: case SDLK_a:
 				if(!keyMenuPressed) {
-					CCFG::getMM()->keyPressed(1);
+					CCFG::getMM()->keyPressed(SDLK_RIGHT);//1
 					keyMenuPressed = true;
 				}
 				break;
+			default:
+				if(mainEvent->key.keysym.mod & KMOD_SHIFT && mainEvent->key.keysym.sym == SDLK_SEMICOLON)
+				{
+					CCFG::getMM()->keyPressed(SDLK_COLON);
+				} else
+					CCFG::getMM()->keyPressed(mainEvent->key.keysym.sym);
+
 		}
 	}
 

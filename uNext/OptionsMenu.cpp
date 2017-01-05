@@ -200,21 +200,23 @@ void OptionsMenu::setKey(int keyID) {
 }
 
 void OptionsMenu::updateActiveButton(int iDir) {
-	if(activeMenuOption == 0 && (iDir == 1 || iDir == 3)) {
+	if(activeMenuOption == 0 && (iDir == SDLK_RIGHT || iDir == SDLK_LEFT)) {
 		switch(iDir) {
-			case 1:
+			case SDLK_RIGHT:
 				if(CCFG::getMusic()->getVolume() < 100) {
 					CCFG::getMusic()->setVolume(CCFG::getMusic()->getVolume() + 5);
 				} else {
 					CCFG::getMusic()->setVolume(100);
 				}
 				break;
-			case 3:
+			case SDLK_LEFT:
 				if(CCFG::getMusic()->getVolume() > 0) {
 					CCFG::getMusic()->setVolume(CCFG::getMusic()->getVolume() - 5);
 				} else {
 					CCFG::getMusic()->setVolume(0);
 				}
+				break;
+			default:
 				break;
 		}
 		updateVolumeRect();

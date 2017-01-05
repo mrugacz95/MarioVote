@@ -9,9 +9,13 @@ class MainMenu : public Menu
 {
 private:
 	bool selectWorld;
+	bool selectSerwerAddr;
 	int activeWorldID, activeSecondWorldID;
-
+	int lastBackSpace = 0;
 	SDL_Rect rSelectWorld;
+	SDL_Rect rSelectServerAddr;
+
+	std::string serverAddr = "192.0.0.1:1410";
 public:
 	MainMenu(void);
 	~MainMenu(void);

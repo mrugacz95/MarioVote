@@ -30,14 +30,14 @@ void Menu::Draw(SDL_Renderer* rR) {
 
 void Menu::updateActiveButton(int iDir) {
 	switch(iDir) {
-		case 0:
+		case SDLK_UP:
 			if (activeMenuOption - 1 < 0) {
 				activeMenuOption = numOfMenuOptions - 1;
 			} else {
 				--activeMenuOption;
 			}
 			break;
-		case 2:
+		case SDLK_DOWN:
 			if (activeMenuOption + 1 >= numOfMenuOptions) {
 				activeMenuOption = 0;
 			} else {

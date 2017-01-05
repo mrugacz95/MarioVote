@@ -35,8 +35,7 @@ public:
 		eGame,
 		eAbout,
 		eOptions,
-		ePasue,
-		//eLevelEditor,
+		ePasue
 	};
 
 	gameState currentGameState;
