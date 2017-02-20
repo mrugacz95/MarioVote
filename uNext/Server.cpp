@@ -2,7 +2,6 @@
 // Created by nuurek on 20.02.17.
 //
 
-#include <stdexcept>
 #include "Server.h"
 
 
@@ -27,7 +26,8 @@ sockaddr_in Server::createAddress() {
     sockaddr_in address;
 
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = inet_addr("127.0.0.1");
+    std::string interfaceAddress = getInterfaceAddress();
+    address.sin_addr.s_addr = inet_addr(interfaceAddress.c_str());
 
     return address;
 }
@@ -46,5 +46,37 @@ void Server::setSocketAddress() {
 
     if (bindResult == -1) {
         throw std::runtime_error("Error while binding address to server socket.");
+    }
+}
+
+std::string Server::getInterfaceAddress() {
+    struct ifaddrs *interfacesAddresses, *interfaceAddress;
+    char host[NI_MAXHOST];
+    int family;
+
+    int result = getifaddrs(&interfacesAddresses);
+    if (result == -1) {
+        throw std::runtime_error("Cannot get info about addresses.");
+    }
+
+    for (interfaceAddress = interfacesAddresses;
+         interfaceAddress != nullptr;
+         interfaceAddress = interfaceAddress->ifa_next) {
+
+        family = interfaceAddress->ifa_addr->sa_family;
+
+        if (family == AF_INET) {
+            result = getnameinfo(interfaceAddress->ifa_addr, sizeof(struct sockaddr_in), host, NI_MAXHOST, NULL,
+                                 0, NI_NUMERICHOST);
+            if (result == -1) {
+                throw std::runtime_error("Cannot get exact info about address.");
+            }
+
+            if (std::string(host).find("127.0.0.1") != std::string::npos) {
+                continue;
+            }
+
+            return std::string(host);
+        }
     }
 }

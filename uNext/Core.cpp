@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "IMG.h"
 #include "CFG.h"
-#include "Text.h"
+#include "Text.h"-
 #include "SDL_mixer.h"
 
 /* ******************************************** */
