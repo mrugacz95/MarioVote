@@ -9,7 +9,7 @@ class MainMenu : public Menu
 {
 private:
 	bool selectWorld;
-	bool selectSerwerAddr;
+	bool selectServerAddress;
 	int activeWorldID, activeSecondWorldID;
 	int lastBackSpace = 0;
 	SDL_Rect rSelectWorld;

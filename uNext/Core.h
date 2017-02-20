@@ -3,7 +3,11 @@
 #ifndef CORE_H
 #define CORE_H
 
+//STD
+#include <memory>
+
 #include "Map.h"
+#include "Server.h"
 
 class CCore
 {
@@ -32,6 +36,7 @@ private:
 	// ----- INPUT
 
 	static Map* oMap;
+    static std::unique_ptr<Server> server;
 
 	// ----- Methods
 
@@ -58,6 +63,7 @@ public:
 	
 	/* ----- get & set ----- */
 	static Map* getMap();
+    static void createServer();
 };
 
 #endif

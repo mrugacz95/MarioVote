@@ -8,6 +8,7 @@
 /* ******************************************** */
 
 Map* CCore::oMap = new Map();
+std::unique_ptr<Server> CCore::server = nullptr;
 bool CCore::mouseLeftPressed = false;
 bool CCore::mouseRightPressed = false;
 int CCore::mouseX = 0;
@@ -32,7 +33,7 @@ CCore::CCore(void) {
 
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO);
 	
-	window = SDL_CreateWindow("uMario - www.LukaszJakowski.pl", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, CCFG::GAME_WIDTH, CCFG::GAME_HEIGHT, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("MarioVote, Marcin Mrugas & Jakub Nurski", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, CCFG::GAME_WIDTH, CCFG::GAME_HEIGHT, SDL_WINDOW_SHOWN);
 
 	if(window == NULL) {
 		quitGame = true;
@@ -380,4 +381,8 @@ void CCore::resetMove() {
 
 Map* CCore::getMap() {
 	return oMap;
+}
+
+void CCore::createServer() {
+	server = std::make_unique<Server>();
 }

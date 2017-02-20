@@ -19,7 +19,7 @@ MainMenu::MainMenu(void) {
     rSelectWorld.w = 306;
     rSelectWorld.h = 72;
 
-    this->selectSerwerAddr = false;
+    this->selectServerAddress = false;
 
     rSelectServerAddr.x = 122;
     rSelectServerAddr.y = 280;
@@ -83,7 +83,7 @@ void MainMenu::Draw(SDL_Renderer *rR) {
 
         SDL_SetRenderDrawBlendMode(rR, SDL_BLENDMODE_NONE);
         CCore::getMap()->setBackgroundColor(rR);
-    } else if (selectSerwerAddr) {
+    } else if (selectServerAddress) {
         SDL_SetRenderDrawBlendMode(rR, SDL_BLENDMODE_BLEND);
         SDL_SetRenderDrawColor(rR, 4, 4, 4, 235);
         SDL_RenderFillRect(rR, &rSelectServerAddr);
@@ -97,15 +97,15 @@ void MainMenu::Draw(SDL_Renderer *rR) {
         rSelectServerAddr.y -= 1;
         rSelectServerAddr.h += 2;
         rSelectServerAddr.w += 2;
-        int writeAddrPos = rSelectServerAddr.x + rSelectServerAddr.w / 2 -
+        int writeAddressPosition = rSelectServerAddr.x + rSelectServerAddr.w / 2 -
                            CCFG::getText()->getTextWidth("WRITE SERVER IP/ADDRESS:PORT:") / 2;
         CCFG::getText()->Draw(rR, "WRITE SERVER IP/ADDRESS:PORT:",
-                              writeAddrPos,
+                              writeAddressPosition,
                               rSelectServerAddr.y + 16, 16, 255, 255, 255);
 
         std::string serverInput = serverAddr + ((SDL_GetTicks() % 2000 < 1000) ? "<" : "");
         CCFG::getText()->Draw(rR, serverInput,
-                              writeAddrPos,
+                              writeAddressPosition,
                               rSelectServerAddr.y + 16 + 24, 16, 255, 255, 255);
     }
 }
@@ -115,8 +115,8 @@ void MainMenu::Draw(SDL_Renderer *rR) {
 void MainMenu::enter() {
     switch (activeMenuOption) {
         case 0:
-            if (!selectSerwerAddr)
-                selectSerwerAddr = true;
+            if (!selectServerAddress)
+                selectServerAddress = true;
             break;
         case 1:
             if (!selectWorld) {
@@ -128,6 +128,7 @@ void MainMenu::enter() {
                 CCFG::getMM()->setViewID(CCFG::getMM()->eGameLoading);
                 CCFG::getMM()->getLoadingMenu()->loadingType = true;
                 CCore::getMap()->setSpawnPointID(0);
+                CCore::createServer();
                 selectWorld = false;
             }
             break;
@@ -148,9 +149,9 @@ void MainMenu::enter() {
 }
 
 void MainMenu::escape() {
-    if (selectWorld || selectSerwerAddr) {
+    if (selectWorld || selectServerAddress) {
         selectWorld = false;
-        selectSerwerAddr = false;
+        selectServerAddress = false;
     } else
         CCore::quitGame = true;
 
