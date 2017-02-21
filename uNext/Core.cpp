@@ -386,3 +386,7 @@ Map* CCore::getMap() {
 void CCore::createServer() {
 	server = std::make_unique<Server>();
 }
+
+std::unique_ptr<Server> CCore::getServer() {
+    return std::move(server);
+}

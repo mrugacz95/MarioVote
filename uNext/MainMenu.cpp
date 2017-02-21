@@ -129,6 +129,7 @@ void MainMenu::enter() {
                 CCFG::getMM()->getLoadingMenu()->loadingType = true;
                 CCore::getMap()->setSpawnPointID(0);
                 CCore::createServer();
+                CCore::getServer()->listen();
                 selectWorld = false;
             }
             break;

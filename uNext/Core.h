@@ -64,6 +64,7 @@ public:
 	/* ----- get & set ----- */
 	static Map* getMap();
     static void createServer();
+    static std::unique_ptr<Server> getServer();
 };
 
 #endif

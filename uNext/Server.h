@@ -10,15 +10,17 @@
 
 //NETWORK
 #define _GNU_SOURCE
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <ifaddrs.h>
 #include <netdb.h>
+#include <unistd.h>
 
 
 class Server {
-    int socketDescriptor;
+    int serverDescriptor;
     sockaddr_in address;
 
     int createSocket();
@@ -26,8 +28,15 @@ class Server {
     void setSocketAddress();
     std::string getInterfaceAddress();
 
+    int acceptClientConnection();
+
 public:
+    static const int QUEUE_SIZE = 10;
+
     Server();
+    ~Server();
+
+    void listen();
 };
 
 

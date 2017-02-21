@@ -6,10 +6,25 @@
 
 
 Server::Server() {
-    socketDescriptor = createSocket();
+    serverDescriptor = createSocket();
     setSocketAddress();
 
     std::cout << "Created server\n";
+}
+
+Server::~Server() {
+    close(serverDescriptor);
+
+    std::cout << "Closed server\n";
+}
+
+void Server::listen() {
+    ::listen(serverDescriptor, QUEUE_SIZE);
+    std::cout << "Listening on: " << inet_ntoa(address.sin_addr) << ":" << ntohs(address.sin_port) << "\n";
+
+    while(true) {
+        acceptClientConnection();
+    }
 }
 
 int Server::createSocket() {
@@ -33,16 +48,16 @@ sockaddr_in Server::createAddress() {
 }
 
 void Server::setSocketAddress() {
-    if (socketDescriptor == 0) {
+    if (serverDescriptor == 0) {
         throw std::logic_error("Cannot set address of non existing socket.");
     }
 
     address = createAddress();
 
     const int optionValue = 1;
-    setsockopt(socketDescriptor, SOL_SOCKET, SO_REUSEADDR, (char*) &optionValue, sizeof(optionValue));
+    setsockopt(serverDescriptor, SOL_SOCKET, SO_REUSEADDR, (char*) &optionValue, sizeof(optionValue));
 
-    int bindResult = bind(socketDescriptor, (sockaddr*) &address, sizeof(address));
+    int bindResult = bind(serverDescriptor, (sockaddr*) &address, sizeof(address));
 
     if (bindResult == -1) {
         throw std::runtime_error("Error while binding address to server socket.");
@@ -79,4 +94,19 @@ std::string Server::getInterfaceAddress() {
             return std::string(host);
         }
     }
+}
+
+int Server::acceptClientConnection() {
+    sockaddr_in clientAddress{0};
+    socklen_t clientAddressSize = sizeof(clientAddress);
+
+    auto clientDescriptor = accept(serverDescriptor, (sockaddr*) &clientAddress, &clientAddressSize);
+    if(clientDescriptor == -1) {
+        throw std::runtime_error("Error while accepting client socket.");
+    }
+
+    std::cout << "New connection from: " << inet_ntoa(clientAddress.sin_addr) << ":" << ntohs(clientAddress.sin_port);
+    std::cout << "(fd: " << clientDescriptor << ")\n";
+
+    return clientDescriptor;
 }
