@@ -13,6 +13,9 @@ Server::Server() {
 }
 
 Server::~Server() {
+    for (const auto& clientDescriptor : clientsDescriptors) {
+        close(clientDescriptor);
+    }
     close(serverDescriptor);
 
     std::cout << "Closed server\n";
@@ -23,7 +26,8 @@ void Server::listen() {
     std::cout << "Listening on: " << inet_ntoa(address.sin_addr) << ":" << ntohs(address.sin_port) << "\n";
 
     while(true) {
-        acceptClientConnection();
+        int clientDescriptor = acceptClientConnection();
+        clientsDescriptors.insert(clientDescriptor);
     }
 }
 
@@ -43,6 +47,7 @@ sockaddr_in Server::createAddress() {
     address.sin_family = AF_INET;
     std::string interfaceAddress = getInterfaceAddress();
     address.sin_addr.s_addr = inet_addr(interfaceAddress.c_str());
+    address.sin_port = 0;
 
     return address;
 }
@@ -55,7 +60,7 @@ void Server::setSocketAddress() {
     address = createAddress();
 
     const int optionValue = 1;
-    setsockopt(serverDescriptor, SOL_SOCKET, SO_REUSEADDR, (char*) &optionValue, sizeof(optionValue));
+    setsockopt(serverDescriptor, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, (char*) &optionValue, sizeof(optionValue));
 
     int bindResult = bind(serverDescriptor, (sockaddr*) &address, sizeof(address));
 

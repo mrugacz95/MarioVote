@@ -7,6 +7,7 @@
 #include <exception>
 #include <iostream>
 #include <string>
+#include <unordered_set>
 
 //NETWORK
 #define _GNU_SOURCE
@@ -28,6 +29,7 @@ class Server {
     void setSocketAddress();
     std::string getInterfaceAddress();
 
+    std::unordered_set<int> clientsDescriptors;
     int acceptClientConnection();
 
 public:
