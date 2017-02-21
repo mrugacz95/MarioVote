@@ -8,6 +8,7 @@
 
 #include "Map.h"
 #include "Server.h"
+#include "Client.h"
 
 class CCore
 {
@@ -37,6 +38,7 @@ private:
 
 	static Map* oMap;
     static std::unique_ptr<Server> server;
+	static std::unique_ptr<Client> client;
 
 	// ----- Methods
 
@@ -65,6 +67,8 @@ public:
 	static Map* getMap();
     static void createServer();
     static std::unique_ptr<Server> getServer();
+	static void createClient(const char *ipv4Address, const uint16_t port);
+	static std::unique_ptr<Client> getClient();
 };
 
 #endif

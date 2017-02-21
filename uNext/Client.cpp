@@ -13,3 +13,7 @@ Client::Client(const char *ipv4Address, uint16_t port) :
 Client::~Client() {
     std::cout << "Closed client\n";
 }
+
+void Client::connect() {
+    socket.connect();
+}

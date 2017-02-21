@@ -13,6 +13,10 @@ Server::Server() :
 }
 
 Server::~Server() {
+    for (auto& clientDescriptor : clientsDescriptors) {
+        close(clientDescriptor);
+    }
+
     std::cout << "Closed server\n";
 }
 

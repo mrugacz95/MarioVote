@@ -118,7 +118,8 @@ void MainMenu::enter() {
             if (!selectServerAddress) {
                 selectServerAddress = true;
             } else {
-
+                CCore::createClient("192.168.8.102", 6789);
+                CCore::getClient()->connect();
             }
             break;
         case 1:

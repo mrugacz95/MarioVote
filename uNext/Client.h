@@ -5,14 +5,16 @@
 #ifndef UMARIO_CLIENT_H
 #define UMARIO_CLIENT_H
 
-#include "Socket.h"
+#include "ClientSocket.h"
 
 class Client {
-    Socket socket;
+    ClientSocket socket;
 
 public:
-    Client(const char *ipv4Address, uint16_t port);
+    Client(const char *ipv4Address, const uint16_t port);
     ~Client();
+
+    void connect();
 };
 
 
