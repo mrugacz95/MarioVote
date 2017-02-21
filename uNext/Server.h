@@ -18,19 +18,11 @@
 #include <netdb.h>
 #include <unistd.h>
 
-#include "Config.h"
+#include "Socket.h"
 
 
 class Server {
-    //TODO: Move socket to separate class if possible.
-    int serverDescriptor;
-    sockaddr_in address;
-
-    int createSocket();
-    sockaddr_in createAddress();
-    void setSocketAddress();
-    std::string getInterfaceAddress();
-
+    Socket socket;
     std::unordered_set<int> clientsDescriptors;
     int acceptClientConnection();
 
