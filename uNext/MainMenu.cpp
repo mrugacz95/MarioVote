@@ -103,7 +103,7 @@ void MainMenu::Draw(SDL_Renderer *rR) {
                               writeAddressPosition,
                               rSelectServerAddr.y + 16, 16, 255, 255, 255);
 
-        std::string serverInput = serverAddr + ((SDL_GetTicks() % 2000 < 1000) ? "<" : "");
+        std::string serverInput = serverAddress + ((SDL_GetTicks() % 2000 < 1000) ? "<" : "");
         CCFG::getText()->Draw(rR, serverInput,
                               writeAddressPosition,
                               rSelectServerAddr.y + 16 + 24, 16, 255, 255, 255);
@@ -118,7 +118,9 @@ void MainMenu::enter() {
             if (!selectServerAddress) {
                 selectServerAddress = true;
             } else {
-                CCore::createClient("192.168.8.102", 6789);
+                const char * address = getServerAddress().c_str();
+                uint16_t port = getServerPort();
+                CCore::createClient(address, port);
                 CCore::getClient()->connect();
             }
             break;
@@ -206,25 +208,40 @@ void MainMenu::updateActiveButton(int iDir) {
             }
             break;
         case SDLK_BACKSPACE:
-            if (serverAddr.size() > 0 && SDL_GetTicks() - lastBackSpace>100) {
-            serverAddr.pop_back();
+            if (serverAddress.size() > 0 && SDL_GetTicks() - lastBackSpace>100) {
+            serverAddress.pop_back();
             lastBackSpace = SDL_GetTicks();
             }
             break;
         default:
             if (iDir >= SDLK_0 && iDir <= SDLK_9)
-                serverAddr+=(char)iDir;
+                serverAddress+=(char)iDir;
             else if (iDir >= SDLK_KP_1 && iDir <= SDLK_KP_0)
                 if(iDir == SDLK_KP_0)
-                    serverAddr+='0';
+                    serverAddress+='0';
                 else
-                    serverAddr+=iDir - SDLK_KP_1 + '0'+1;
+                    serverAddress+=iDir - SDLK_KP_1 + '0'+1;
             else if (iDir == SDLK_COLON)
-                serverAddr+=':';
+                serverAddress+=':';
             else if(iDir==SDLK_PERIOD){
-                serverAddr+='.';
+                serverAddress+='.';
             }
             usleep(150);
             break;
     }
+}
+
+std::string MainMenu::getServerAddress() {
+    auto colonPosition = serverAddress.find(':');
+    std::string address = serverAddress.substr(0, colonPosition);
+
+    return address;
+}
+
+uint16_t MainMenu::getServerPort() {
+    auto colonPosition = serverAddress.find(':');
+    std::string portString = serverAddress.substr(colonPosition + 1);
+    int port = std::stoi(portString);
+
+    return static_cast<uint16_t >(port);
 }
