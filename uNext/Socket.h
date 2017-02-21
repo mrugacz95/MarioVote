@@ -21,23 +21,23 @@
 
 
 class Socket {
+protected:
     int descriptor;
     sockaddr_in address;
 
     int createSocket() const;
-    sockaddr_in createAddress(const uint16_t port = 0, const char * ipv4Address = nullptr) const;
+    sockaddr_in createAddress(const char * ipv4Address = nullptr, const uint16_t port = 0) const;
     void setSocketAddress();
     void setSocketOption(const int optionValue = 1);
-    void bindAddressToSocket();
     std::string getInterfaceAddress() const;
 
 public:
-    Socket(const uint16_t port = 0, const char * ipv4Address = nullptr);
+    Socket(const char * ipv4Address = nullptr, const uint16_t port = 0);
+    ~Socket();
 
     int getDescriptor() const;
     in_addr getAddress() const;
     in_port_t getPort() const;
-
 };
 
 

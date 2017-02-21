@@ -115,8 +115,11 @@ void MainMenu::Draw(SDL_Renderer *rR) {
 void MainMenu::enter() {
     switch (activeMenuOption) {
         case 0:
-            if (!selectServerAddress)
+            if (!selectServerAddress) {
                 selectServerAddress = true;
+            } else {
+
+            }
             break;
         case 1:
             if (!selectWorld) {

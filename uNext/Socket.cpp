@@ -5,9 +5,9 @@
 #include <stdexcept>
 #include "Socket.h"
 
-Socket::Socket(const uint16_t port, const char * ipv4Address) {
+Socket::Socket(const char * ipv4Address, const uint16_t port) {
     descriptor = createSocket();
-    address = createAddress(port, ipv4Address);
+    address = createAddress(ipv4Address, port);
     setSocketAddress();
 }
 
@@ -21,7 +21,7 @@ int Socket::createSocket() const {
     return descriptor;
 }
 
-sockaddr_in Socket::createAddress(const uint16_t port, const char * ipv4Address) const {
+sockaddr_in Socket::createAddress(const char * ipv4Address, const uint16_t port) const {
     sockaddr_in address;
 
     address.sin_family = AF_INET;
@@ -43,7 +43,6 @@ void Socket::setSocketAddress() {
     }
 
     setSocketOption();
-    bindAddressToSocket();
 }
 
 void Socket::setSocketOption(const int optionValue) {
@@ -51,14 +50,6 @@ void Socket::setSocketOption(const int optionValue) {
 
     if (result == -1) {
         throw std::runtime_error("Error while setting socket option.");
-    }
-}
-
-void Socket::bindAddressToSocket() {
-    int result = bind(descriptor, (sockaddr*) &address, sizeof(address));
-
-    if (result == -1) {
-        throw std::runtime_error("Error while binding address to server socket.");
     }
 }
 
@@ -104,4 +95,8 @@ in_addr Socket::getAddress() const {
 
 in_port_t Socket::getPort() const {
     return address.sin_port;
+}
+
+Socket::~Socket() {
+    close(descriptor);
 }

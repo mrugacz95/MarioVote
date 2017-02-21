@@ -18,13 +18,12 @@
 #include <netdb.h>
 #include <unistd.h>
 
-#include "Socket.h"
+#include "ServerSocket.h"
 
 
 class Server {
-    Socket socket;
+    ServerSocket socket;
     std::unordered_set<int> clientsDescriptors;
-    int acceptClientConnection();
 
 public:
     static const int QUEUE_SIZE = 10;
