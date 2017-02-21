@@ -47,7 +47,7 @@ sockaddr_in Server::createAddress() {
     address.sin_family = AF_INET;
     std::string interfaceAddress = getInterfaceAddress();
     address.sin_addr.s_addr = inet_addr(interfaceAddress.c_str());
-    address.sin_port = 0;
+    address.sin_port = htons(GLOBAL_CONFIG.getServerPort());
 
     return address;
 }
