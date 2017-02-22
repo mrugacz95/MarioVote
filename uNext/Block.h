@@ -40,9 +40,10 @@ public:
 	bool getUse() const;
 	bool getVisible() const;
 
-    friend void to_json(JSON& json, const Block& block);
-    friend void to_json(JSON& json, const std::vector<Block*> blocks);
-    friend void from_json(const JSON& json, Block& block);
+    friend void to_json(JSON& json, const Block* block);
+    friend void from_json(const JSON& json, Block* block);
+    friend void to_json(JSON& json, const std::vector<Block*>& blocks);
+    friend void from_json(const JSON& json, std::vector<Block*>& blocks);
 };
 
 #endif
