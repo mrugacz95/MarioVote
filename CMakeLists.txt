@@ -24,6 +24,7 @@ find_package(SDL2_Mixer REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR})
 
 file(COPY uNext/files DESTINATION .)
+file(COPY uNext/lib DESTINATION .)
 
 include_directories(uNext)
 

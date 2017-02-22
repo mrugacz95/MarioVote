@@ -2,7 +2,7 @@
 #include "Config.h"
 #include "Core.h"
 
-Config GLOBAL_CONFIG = Config("config.json");
+Config GLOBAL_CONFIG = Config("files/config.json");
 
 int main(int argc, char *argv[])
 {
