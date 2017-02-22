@@ -107,9 +107,16 @@ void CCore::mainLoop() {
             input["space"] = CCFG::keySpace;
 			input["isPaused"] = CCFG::getMM()->currentGameState == MenuManager::gameState::ePause;
 
-			JSON mapJSON = oMap;
-			std::cout << mapJSON << "\n";
-			from_json(mapJSON, oMap);
+			//TODO Dumped map JSON is too large! Almost 230kB
+			static int count;
+			count++;
+			count %= 60;
+			if (count == 0) {
+				JSON mapJSON = oMap;
+				auto dumped = mapJSON.dump();
+				std::cout << "Size: " << dumped.size() << "\n";
+				from_json(mapJSON, oMap);
+			}
 
 			server->sendToClients(input);
 		}

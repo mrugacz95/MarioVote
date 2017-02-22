@@ -70,9 +70,9 @@ void from_json(const JSON& json, Block* block) {
 }
 
 void to_json(JSON& json, const std::vector<Block*>& blocks) {
-    std::vector<JSON> blocksVector(blocks.size());
+    std::vector<JSON> blocksVector;
     for (auto& block : blocks) {
-        blocksVector[block->iBlockID] = block;
+        blocksVector.push_back(block);
     }
 
     json = blocksVector;

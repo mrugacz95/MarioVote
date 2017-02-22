@@ -10369,11 +10369,15 @@ Flag* Map::getFlag() {
 void to_json(JSON& json, const Map* map) {
 	json["fXPos"] = map->fXPos;
 	json["fYPos"] = map->fYPos;
+	json["blocks"] = map->vBlock;
 	json["minionBlocks"] = map->vMinion;
+	json["mapLevels"] = map->lMap;
 }
 
 void from_json(const JSON& json, Map* map) {
 	map->fXPos = json["fXPos"].get<float>();
 	map->fYPos = json["fYPos"].get<float>();
+	from_json(json["blocks"], map->vBlock);
 	from_json(json["minionBlocks"], map->vMinion);
+	from_json(json["mapLevels"], map->lMap);
 }

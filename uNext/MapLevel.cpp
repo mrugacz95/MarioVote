@@ -109,3 +109,57 @@ bool MapLevel::getSpawnStar() {
 void MapLevel::setSpawnStar(bool spawnStar) {
 	this->spawnStar = spawnStar;
 }
+
+void to_json(JSON &json, const MapLevel* mapLevel) {
+	json = JSON({
+						mapLevel->spawnMushroom,
+						mapLevel->powerUP,
+						mapLevel->spawnStar,
+						mapLevel->iNumOfUse,
+						mapLevel->blockAnimation,
+						mapLevel->iYPos,
+						mapLevel->bYDirection
+				});
+}
+
+void from_json(const JSON &json, MapLevel* mapLevel) {
+	mapLevel->spawnMushroom = json[0];
+	mapLevel->powerUP = json[1];
+	mapLevel->spawnStar = json[2];
+	mapLevel->iNumOfUse = json[3];
+	mapLevel->blockAnimation = json[4];
+	mapLevel->iYPos = json[5];
+	mapLevel->bYDirection = json[6];
+}
+
+void to_json(JSON &json, const std::vector<MapLevel *> &mapLevels) {
+	std::vector<JSON> mapLevelsVector;
+	for (auto& mapLevel : mapLevels) {
+		mapLevelsVector.push_back(mapLevel);
+	}
+
+	json = mapLevelsVector;
+}
+
+void from_json(const JSON &json, std::vector<MapLevel *> &mapLevels) {
+	for (int i = 0; i < mapLevels.size(); i++) {
+		auto mapLevelsJSON = json[i];
+		from_json(mapLevelsJSON, mapLevels[i]);
+	}
+}
+
+void to_json(JSON &json, const std::vector<std::vector<MapLevel *>> &mapLevelsVectors) {
+	std::vector<JSON> mapLevelsGrid;
+	for (auto& mapLevels : mapLevelsVectors) {
+		mapLevelsGrid.push_back(mapLevels);
+	}
+
+	json = mapLevelsGrid;
+}
+
+void from_json(const JSON &json, std::vector<std::vector<MapLevel *>> &mapLevelsVectors) {
+	for (int i = 0; i < mapLevelsVectors.size(); i++) {
+		auto mapLevelsJSON = json[i];
+		from_json(mapLevelsJSON, mapLevelsVectors[i]);
+	}
+}
