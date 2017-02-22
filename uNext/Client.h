@@ -8,6 +8,10 @@
 #include <vector>
 
 #include "ClientSocket.h"
+#include "lib/json.hpp"
+
+using JSON = nlohmann::json;
+
 
 class Client {
     ClientSocket socket;
@@ -17,7 +21,7 @@ public:
     ~Client();
 
     void connect();
-    std::vector<unsigned char> receiveFromServer();
+    JSON receiveFromServer();
 };
 
 

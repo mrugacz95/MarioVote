@@ -18,14 +18,18 @@ void Client::connect() {
     socket.connect();
 }
 
-std::vector<unsigned char> Client::receiveFromServer() {
-    std::vector<unsigned char> response;
-    response.resize(6);
+JSON Client::receiveFromServer() {
+    std::string response;
+    std::vector<char> buffer(4096);
 
-    int result = read(socket.getDescriptor(), &response[0], response.size());
-    if (result == -1) {
+    int bytes = read(socket.getDescriptor(), &buffer[0], buffer.size());
+    if (bytes == -1) {
         throw std::runtime_error("Error while receiving data from server.");
     }
 
-    return std::move(response);
+    response.append(buffer.begin(), buffer.end());
+
+    JSON json = JSON::parse(response);
+
+    return json;
 }

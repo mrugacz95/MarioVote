@@ -48,14 +48,17 @@ void Server::stop() {
     started = false;
 }
 
-void Server::sendToClients(const unsigned char *buffer, int count) {
+void Server::sendToClients(JSON json) {
+    std::string dumped = json.dump();
+    auto buffer = std::vector<char>(dumped.begin(), dumped.end());
+
     int result;
     std::unordered_set<int> badClientsDescriptors;
 
     for (auto& clientDescriptor : clientsDescriptors) {
-        result = write(clientDescriptor, buffer, count);
+        result = write(clientDescriptor, &buffer[0], buffer.size());
 
-        if (result != count) {
+        if (result != buffer.size()) {
             badClientsDescriptors.insert(clientDescriptor);
         }
     }

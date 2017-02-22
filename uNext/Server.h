@@ -20,6 +20,9 @@
 #include <unistd.h>
 
 #include "ServerSocket.h"
+#include "lib/json.hpp"
+
+using JSON = nlohmann::json;
 
 
 class Server {
@@ -38,7 +41,7 @@ public:
     void start();
     void stop();
     bool isStarted();
-    void sendToClients(const unsigned char * buffer, int count);
+    void sendToClients(JSON json);
 };
 
 

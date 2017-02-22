@@ -98,28 +98,25 @@ void CCore::mainLoop() {
 		MouseInput();
 
 		if (server && server->isStarted()) {
-			unsigned char keys[6];
+            JSON input;
+            input["direction"] = firstDir;
+            input["A"] = keyAPressed;
+            input["S"] = keyS;
+            input["D"] = keyDPressed;
+            input["shift"] = keyShift;
+            input["space"] = CCFG::keySpace;
 
-			keys[0] = static_cast<unsigned char>(firstDir);
-			keys[1] = static_cast<unsigned char>(keyAPressed);
-			keys[2] = static_cast<unsigned char>(keyS);
-			keys[3] = static_cast<unsigned char>(keyDPressed);
-			keys[4] = static_cast<unsigned char>(keyShift);
-			keys[5] = static_cast<unsigned char>(CCFG::keySpace);
-
-			server->sendToClients(keys, 6);
+			server->sendToClients(input);
 		}
 
 		if (client) {
 			auto response = client->receiveFromServer();
-			firstDir = static_cast<bool>(response[0]);
-			keyAPressed = static_cast<bool>(response[1]);
-			keyS = static_cast<bool>(response[2]);
-			keyDPressed = static_cast<bool>(response[3]);
-			keyShift = static_cast<bool>(response[4]);
-			CCFG::keySpace = static_cast<bool>(response[5]);
-			std::cout << "Response: " << firstDir << keyAPressed << keyS << keyDPressed << keyShift;
-			std::cout << "\n";
+			firstDir = response["direction"];
+			keyAPressed = response["A"];
+			keyS = response["S"];
+			keyDPressed = response["D"];
+			keyShift = response["shift"];
+			CCFG::keySpace = response["space"];
 		}
 
 		Update();

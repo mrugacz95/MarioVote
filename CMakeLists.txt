@@ -28,7 +28,7 @@ file(COPY uNext/files DESTINATION .)
 include_directories(uNext)
 
 file(GLOB_RECURSE uMario_SOURCES "uNext/*.cpp")
-add_executable (uMario ${uMario_SOURCES} uNext/Server.cpp uNext/Server.h uNext/Config.h uNext/Socket.cpp uNext/Socket.h uNext/Client.cpp uNext/Client.h uNext/ServerSocket.cpp uNext/ServerSocket.h uNext/ClientSocket.cpp uNext/ClientSocket.h)
+add_executable (uMario ${uMario_SOURCES} uNext/Server.cpp uNext/Server.h uNext/Config.h uNext/Socket.cpp uNext/Socket.h uNext/Client.cpp uNext/Client.h uNext/ServerSocket.cpp uNext/ServerSocket.h uNext/ClientSocket.cpp uNext/ClientSocket.h uNext/InputPacket.h)
 
 target_link_libraries(uMario ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_MIXER_LIBRARY})
 

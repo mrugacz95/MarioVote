@@ -9,6 +9,9 @@
 #include "Map.h"
 #include "Server.h"
 #include "Client.h"
+#include "lib/json.hpp"
+
+using JSON = nlohmann::json;
 
 class CCore
 {
