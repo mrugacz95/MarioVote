@@ -72,6 +72,10 @@ void PauseMenu::enter() {
 			break;
 		case 2:
 			CCore::getMap()->resetGameData();
+
+			CCore::getServer()->stop();
+			CCore::destroyServer();
+
 			CCFG::getMM()->setViewID(CCFG::getMM()->eMainMenu);
 			break;
 		case 3:

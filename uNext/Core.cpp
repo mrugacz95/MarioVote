@@ -392,6 +392,10 @@ std::shared_ptr<Server> CCore::getServer() {
     return server;
 }
 
+void CCore::destroyServer() {
+    server.reset();
+}
+
 void CCore::createClient(const char *ipv4Address, const uint16_t port) {
 	client = std::make_shared<Client>(ipv4Address, port);
 }

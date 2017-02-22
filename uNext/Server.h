@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_set>
+#include <thread>
 
 //NETWORK
 #include <sys/types.h>
@@ -25,13 +26,17 @@ class Server {
     ServerSocket socket;
     std::unordered_set<int> clientsDescriptors;
 
+    bool isStarted = false;
+    void listen();
+
 public:
     static const int QUEUE_SIZE = 10;
 
     Server();
     ~Server();
 
-    void listen();
+    void start();
+    void stop();
 };
 
 

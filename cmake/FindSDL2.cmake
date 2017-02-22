@@ -137,7 +137,7 @@ IF(SDL2_LIBRARY_TEMP)
 	# CMake doesn't display the -framework Cocoa string in the UI even
 	# though it actually is there if I modify a pre-used variable.
 	# I think it has something to do with the CACHE STRING.
-	# So I use a temporary variable until the end so I can set the
+	# So I use a temporary variable until the stop so I can set the
 	# "real" variable in one-shot.
 	IF(APPLE)
 		SET(SDL2_LIBRARY_TEMP ${SDL2_LIBRARY_TEMP} "-framework Cocoa")

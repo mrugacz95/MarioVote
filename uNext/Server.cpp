@@ -17,15 +17,31 @@ Server::~Server() {
         close(clientDescriptor);
     }
 
-    std::cout << "Closed server\n";
+    std::cout << "Destroyed server\n";
 }
 
 void Server::listen() {
     socket.listen(QUEUE_SIZE);
     std::cout << "Listening on: " << inet_ntoa(socket.getAddress()) << ":" << ntohs(socket.getPort()) << "\n";
 
-    while(true) {
-        int clientDescriptor = socket.accept();
+    while(isStarted) {
+        int clientDescriptor;
+        try {
+            clientDescriptor = socket.accept();
+        } catch (std::runtime_error) {
+            break;
+        }
         clientsDescriptors.insert(clientDescriptor);
     }
+}
+
+void Server::start() {
+    isStarted = true;
+
+    std::thread clientListenThread(&Server::listen, this);
+    clientListenThread.detach();
+}
+
+void Server::stop() {
+    isStarted = false;
 }

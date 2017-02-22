@@ -135,9 +135,7 @@ void MainMenu::enter() {
                 CCFG::getMM()->getLoadingMenu()->loadingType = true;
                 CCore::getMap()->setSpawnPointID(0);
                 CCore::createServer();
-                auto server = CCore::getServer().get();
-                std::thread clientListenThread(&Server::listen, server);
-                clientListenThread.detach();
+                CCore::getServer()->start();
                 selectWorld = false;
             }
             break;
@@ -161,9 +159,9 @@ void MainMenu::escape() {
     if (selectWorld || selectServerAddress) {
         selectWorld = false;
         selectServerAddress = false;
-    } else
+    } else {
         CCore::quitGame = true;
-
+    }
 }
 
 void MainMenu::updateActiveButton(int iDir) {

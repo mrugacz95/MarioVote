@@ -67,6 +67,7 @@ public:
 	static Map* getMap();
     static void createServer();
     static std::shared_ptr<Server> getServer();
+	static void destroyServer();
 	static void createClient(const char *ipv4Address, const uint16_t port);
 	static std::shared_ptr<Client> getClient();
 };
