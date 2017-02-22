@@ -96,6 +96,20 @@ void CCore::mainLoop() {
 
 		Input();
 		MouseInput();
+
+		if (server && server->isStarted()) {
+			server->sendToClients("12345", 5);
+		}
+
+		if (client) {
+			auto response = client->receiveFromServer();
+			std::cout << "Response: ";
+			for (auto& sign : response) {
+				std::cout << sign;
+			}
+			std::cout << "\n";
+		}
+
 		Update();
 		Draw();
 

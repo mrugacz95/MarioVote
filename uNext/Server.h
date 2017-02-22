@@ -26,7 +26,7 @@ class Server {
     ServerSocket socket;
     std::unordered_set<int> clientsDescriptors;
 
-    bool isStarted = false;
+    bool started = false;
     void listen();
 
 public:
@@ -37,6 +37,8 @@ public:
 
     void start();
     void stop();
+    bool isStarted();
+    void sendToClients(char * buffer, int count);
 };
 
 

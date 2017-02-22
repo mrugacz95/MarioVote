@@ -16,7 +16,7 @@ private:
 	SDL_Rect rSelectWorld;
 	SDL_Rect rSelectServerAddr;
 
-	std::string serverAddress = "192.0.0.1:1410";
+	std::string serverAddress = "192.168.8.102:6789";
 	std::string getServerAddress();
 	uint16_t getServerPort();
 public:

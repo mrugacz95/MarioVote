@@ -24,24 +24,47 @@ void Server::listen() {
     socket.listen(QUEUE_SIZE);
     std::cout << "Listening on: " << inet_ntoa(socket.getAddress()) << ":" << ntohs(socket.getPort()) << "\n";
 
-    while(isStarted) {
+    while(started) {
         int clientDescriptor;
+
         try {
             clientDescriptor = socket.accept();
         } catch (std::runtime_error) {
             break;
         }
+
         clientsDescriptors.insert(clientDescriptor);
     }
 }
 
 void Server::start() {
-    isStarted = true;
+    started = true;
 
     std::thread clientListenThread(&Server::listen, this);
     clientListenThread.detach();
 }
 
 void Server::stop() {
-    isStarted = false;
+    started = false;
+}
+
+void Server::sendToClients(char *buffer, int count) {
+    int result;
+    std::unordered_set<int> badClientsDescriptors;
+
+    for (auto& clientDescriptor : clientsDescriptors) {
+        result = write(clientDescriptor, buffer, count);
+
+        if (result != count) {
+            badClientsDescriptors.insert(clientDescriptor);
+        }
+    }
+
+    for (auto& clientDescriptor : badClientsDescriptors) {
+        clientsDescriptors.erase(clientDescriptor);
+    }
+}
+
+bool Server::isStarted() {
+    return started;
 }

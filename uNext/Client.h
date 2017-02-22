@@ -5,6 +5,8 @@
 #ifndef UMARIO_CLIENT_H
 #define UMARIO_CLIENT_H
 
+#include <vector>
+
 #include "ClientSocket.h"
 
 class Client {
@@ -15,6 +17,7 @@ public:
     ~Client();
 
     void connect();
+    std::vector<unsigned char> receiveFromServer();
 };
 
 
