@@ -10366,13 +10366,13 @@ Flag* Map::getFlag() {
 	return oFlag;
 }
 
-void to_json(JSON& json, const Map& map) {
-	json["fXPos"] = map.fXPos;
-	json["fYPos"] = map.fYPos;
-	json["minionBlocks"] = map.vMinion;
+void to_json(JSON& json, const Map* map) {
+	json["fXPos"] = map->fXPos;
+	json["fYPos"] = map->fYPos;
+	//json["minionBlocks"] = map.vMinion;
 }
 
-void Map::loadJson(const JSON &json) {
-	fXPos = json["fXPos"];
-	fYPos = json["fYPos"];
+void from_json(const JSON& json, Map* map) {
+	map->fXPos = json["fXPos"].get<float>();
+	map->fYPos = json["fYPos"].get<float>();
 }

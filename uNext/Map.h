@@ -408,8 +408,8 @@ public:
 	bool getInEvent();
 	void setInEvent(bool inEvent);
 
-	friend void to_json(JSON& json, const Map& block);
-	void loadJson(const JSON& json);
+	friend void to_json(JSON& json, const Map* map);
+	friend void from_json(const JSON& json, Map* map);
 };
 
 

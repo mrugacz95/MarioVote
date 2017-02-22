@@ -107,6 +107,10 @@ void CCore::mainLoop() {
             input["space"] = CCFG::keySpace;
 			input["isPaused"] = CCFG::getMM()->currentGameState == MenuManager::gameState::ePause;
 
+			JSON mapJSON = oMap;
+			std::cout << mapJSON << "\n";
+			from_json(mapJSON, oMap);
+
 			server->sendToClients(input);
 		}
 
@@ -119,8 +123,6 @@ void CCore::mainLoop() {
 			keyDPressed = response["D"];
 			keyShift = response["shift"];
 			CCFG::keySpace = response["space"];
-
-			std::cout << "Pause: " << client->isGamePaused() << "\n";
 		}
 
 		Update();

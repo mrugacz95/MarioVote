@@ -42,6 +42,7 @@ public:
 
     friend void to_json(JSON& json, const Block& block);
     friend void to_json(JSON& json, const std::vector<Block*> blocks);
+    friend void from_json(const JSON& json, Block& block);
 };
 
 #endif

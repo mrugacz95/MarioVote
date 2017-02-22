@@ -55,21 +55,25 @@ bool Block::getVisible() const {
 
 void to_json(JSON& json, const Block& block) {
     json = JSON({
-                        {"id",     block.getBlockID()},
-						{"values", {
-										   block.getCollision(),
-										   block.getDeath(),
-										   block.getUse(),
-										   block.getVisible()
-								   }}
-				});
+                         block.getCollision(),
+                         block.getDeath(),
+                         block.getUse(),
+                         block.getVisible()
+                 });
 }
 
 void to_json(JSON& json, const std::vector<Block*> blocks) {
-    std::vector<JSON> minionsJSON;
-    for (auto& minion : blocks) {
-        minionsJSON.emplace_back(JSON(*minion));
+    std::vector<JSON> blocksVector(blocks.size());
+    for (auto& block : blocks) {
+        blocksVector[block->iBlockID] = *block;
     }
 
-    json = minionsJSON;
+    json = blocksVector;
+}
+
+void from_json(const JSON& json, Block& block) {
+    block.bCollision = json[0];
+    block.bDeath = json[1];
+    block.bUse = json[2];
+    block.bVisible = json[3];
 }
