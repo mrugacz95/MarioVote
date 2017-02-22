@@ -22,7 +22,7 @@ JSON Client::receiveFromServer() {
     std::string response;
     std::vector<char> buffer(4096);
 
-    int bytes = read(socket.getDescriptor(), &buffer[0], buffer.size());
+    auto bytes = read(socket.getDescriptor(), &buffer[0], buffer.size());
     if (bytes == -1) {
         throw std::runtime_error("Error while receiving data from server.");
     }

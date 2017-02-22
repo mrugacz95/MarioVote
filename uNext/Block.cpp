@@ -25,7 +25,7 @@ void Block::Draw(SDL_Renderer* rR, int iOffsetX, int iOffsetY) {
 
 /* ******************************************** */
 
-int Block::getBlockID() {
+int Block::getBlockID() const {
 	return iBlockID;
 }
 
@@ -37,18 +37,39 @@ Sprite* Block::getSprite() {
 	return sSprite;
 }
 
-bool Block::getCollision() {
+bool Block::getCollision() const {
 	return bCollision;
 }
 
-bool Block::getDeath() {
+bool Block::getDeath() const {
 	return bDeath;
 }
 
-bool Block::getUse() {
+bool Block::getUse() const {
 	return bUse;
 }
 
-bool Block::getVisible() {
+bool Block::getVisible() const {
 	return bVisible;
+}
+
+void to_json(JSON& json, const Block& block) {
+    json = JSON({
+                        {"id",     block.getBlockID()},
+						{"values", {
+										   block.getCollision(),
+										   block.getDeath(),
+										   block.getUse(),
+										   block.getVisible()
+								   }}
+				});
+}
+
+void to_json(JSON& json, const std::vector<Block*> blocks) {
+    std::vector<JSON> minionsJSON;
+    for (auto& minion : blocks) {
+        minionsJSON.emplace_back(JSON(*minion));
+    }
+
+    json = minionsJSON;
 }

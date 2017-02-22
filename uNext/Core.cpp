@@ -106,6 +106,9 @@ void CCore::mainLoop() {
             input["shift"] = keyShift;
             input["space"] = CCFG::keySpace;
 
+           	JSON mapJSON = *oMap;
+			std::cout << mapJSON << "\n";
+
 			server->sendToClients(input);
 		}
 

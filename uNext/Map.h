@@ -43,6 +43,9 @@
 #include "BlockDebris.h"
 #include "Bubble.h"
 #include <vector>
+#include "lib/json.hpp"
+
+using JSON = nlohmann::json;
 
 /* ******************************************** */
 
@@ -404,6 +407,9 @@ public:
 	Event* getEvent();
 	bool getInEvent();
 	void setInEvent(bool inEvent);
+
+	friend void to_json(JSON& json, const Map& block);
 };
+
 
 #endif

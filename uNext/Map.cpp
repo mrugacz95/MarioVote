@@ -10365,3 +10365,7 @@ MapLevel* Map::getMapBlock(int iX, int iY) {
 Flag* Map::getFlag() {
 	return oFlag;
 }
+
+void to_json(JSON& json, const Map& map) {
+	json["minionBlocks"] = map.vMinion;
+}

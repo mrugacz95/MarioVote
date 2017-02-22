@@ -5,6 +5,9 @@
 
 #include "IMG.h"
 #include "Sprite.h"
+#include "lib/json.hpp"
+
+using JSON = nlohmann::json;
 
 /* ******************************************** */
 
@@ -28,14 +31,17 @@ public:
 	void Draw(SDL_Renderer* rR, int iOffsetX, int iOffsetY);
 
 	/* ----- get & set ----- */
-	int getBlockID();
+	int getBlockID() const;
 	void setBlockID(int iID);
 
 	Sprite* getSprite();
-	bool getCollision();
-	bool getDeath();
-	bool getUse();
-	bool getVisible();
+	bool getCollision() const;
+	bool getDeath() const;
+	bool getUse() const;
+	bool getVisible() const;
+
+    friend void to_json(JSON& json, const Block& block);
+    friend void to_json(JSON& json, const std::vector<Block*> blocks);
 };
 
 #endif

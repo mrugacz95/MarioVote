@@ -52,7 +52,7 @@ void Server::sendToClients(JSON json) {
     std::string dumped = json.dump();
     auto buffer = std::vector<char>(dumped.begin(), dumped.end());
 
-    int result;
+    ssize_t result;
     std::unordered_set<int> badClientsDescriptors;
 
     for (auto& clientDescriptor : clientsDescriptors) {
