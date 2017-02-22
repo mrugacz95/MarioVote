@@ -135,7 +135,9 @@ void MainMenu::enter() {
                 CCFG::getMM()->getLoadingMenu()->loadingType = true;
                 CCore::getMap()->setSpawnPointID(0);
                 CCore::createServer();
-                CCore::getServer()->listen();
+                auto server = CCore::getServer().get();
+                std::thread clientListenThread(&Server::listen, server);
+                clientListenThread.detach();
                 selectWorld = false;
             }
             break;

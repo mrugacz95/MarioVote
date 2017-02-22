@@ -8,8 +8,8 @@
 /* ******************************************** */
 
 Map* CCore::oMap = new Map();
-std::unique_ptr<Server> CCore::server = nullptr;
-std::unique_ptr<Client> CCore::client = nullptr;
+std::shared_ptr<Server> CCore::server = nullptr;
+std::shared_ptr<Client> CCore::client = nullptr;
 bool CCore::mouseLeftPressed = false;
 bool CCore::mouseRightPressed = false;
 int CCore::mouseX = 0;
@@ -385,17 +385,17 @@ Map* CCore::getMap() {
 }
 
 void CCore::createServer() {
-	server = std::make_unique<Server>();
+	server = std::make_shared<Server>();
 }
 
-std::unique_ptr<Server> CCore::getServer() {
-    return std::move(server);
+std::shared_ptr<Server> CCore::getServer() {
+    return server;
 }
 
 void CCore::createClient(const char *ipv4Address, const uint16_t port) {
-	client = std::make_unique<Client>(ipv4Address, port);
+	client = std::make_shared<Client>(ipv4Address, port);
 }
 
-std::unique_ptr<Client> CCore::getClient() {
-	return std::move(client);
+std::shared_ptr<Client> CCore::getClient() {
+	return client;
 }

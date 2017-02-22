@@ -37,8 +37,8 @@ private:
 	// ----- INPUT
 
 	static Map* oMap;
-    static std::unique_ptr<Server> server;
-	static std::unique_ptr<Client> client;
+    static std::shared_ptr<Server> server;
+	static std::shared_ptr<Client> client;
 
 	// ----- Methods
 
@@ -66,9 +66,9 @@ public:
 	/* ----- get & set ----- */
 	static Map* getMap();
     static void createServer();
-    static std::unique_ptr<Server> getServer();
+    static std::shared_ptr<Server> getServer();
 	static void createClient(const char *ipv4Address, const uint16_t port);
-	static std::unique_ptr<Client> getClient();
+	static std::shared_ptr<Client> getClient();
 };
 
 #endif
