@@ -18,7 +18,7 @@ void Client::connect() {
     socket.connect();
 }
 
-JSON Client::receiveFromServer() {
+JSON Client::receiveInput() {
     std::string response;
     std::vector<char> buffer(4096);
 
@@ -31,5 +31,15 @@ JSON Client::receiveFromServer() {
 
     JSON json = JSON::parse(response);
 
+    isServerPaused = json["isPaused"];
+
     return json;
+}
+
+JSON Client::synchronizeMap() {
+    return JSON();
+}
+
+bool Client::isGamePaused() {
+    return isServerPaused;
 }

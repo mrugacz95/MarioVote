@@ -16,12 +16,16 @@ using JSON = nlohmann::json;
 class Client {
     ClientSocket socket;
 
+    bool isServerPaused = true;
+
 public:
     Client(const char *ipv4Address, const uint16_t port);
     ~Client();
 
     void connect();
-    JSON receiveFromServer();
+    JSON receiveInput();
+    bool isGamePaused();
+    JSON synchronizeMap();
 };
 
 

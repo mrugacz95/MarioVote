@@ -35,8 +35,10 @@ void MenuManager::Update() {
 			oLoadingMenu->Update();
 			break;
 		case eGame:
-			CCore::getMap()->Update();
-			CCore::getMap()->UpdateMinionsCollisions();
+			if (CCore::getServer() || !CCore::getClient()->isGamePaused()) {
+				CCore::getMap()->Update();
+				CCore::getMap()->UpdateMinionsCollisions();
+			}
 			//oLE->Update();
 			break;
 		case eAbout:
@@ -48,8 +50,12 @@ void MenuManager::Update() {
 		case eOptions:
 			oOptionsMenu->Update();
 			break;
-		case ePasue:
+		case ePause:
 			oPauseMenu->Update();
+			if (CCore::getClient() && !CCore::getClient()->isGamePaused()) {
+				CCore::getMap()->Update();
+				CCore::getMap()->UpdateMinionsCollisions();
+			}
 			break;
 	}
 }
@@ -82,7 +88,7 @@ void MenuManager::Draw(SDL_Renderer* rR) {
 			CCore::getMap()->DrawGameLayout(rR);
 			oOptionsMenu->Draw(rR);
 			break;
-		case ePasue:
+		case ePause:
 			CCore::getMap()->DrawMap(rR);
 			CCore::getMap()->DrawMinions(rR);
 			CCore::getMap()->getPlayer()->Draw(rR);
@@ -136,7 +142,7 @@ void MenuManager::enter() {
 		case eOptions:
 			oOptionsMenu->enter();
 			break;
-		case ePasue:
+		case ePause:
 			oPauseMenu->enter();
 			break;
 	}
@@ -153,7 +159,7 @@ void MenuManager::escape() {
 		case eOptions:
 			oOptionsMenu->escape();
 			break;
-		case ePasue:
+		case ePause:
 			oPauseMenu->escape();
 			break;
 		case eMainMenu:
@@ -178,7 +184,7 @@ void MenuManager::keyPressed(int iDir) {
 		case eOptions:
 			oOptionsMenu->updateActiveButton(iDir);
 			break;
-		case ePasue:
+		case ePause:
 			oPauseMenu->updateActiveButton(iDir);
 			break;
 	}
@@ -192,7 +198,7 @@ void MenuManager::resetActiveOptionID(gameState ID) {
 		case eOptions:
 			oOptionsMenu->activeMenuOption = 0;
 			break;
-		case ePasue:
+		case ePause:
 			oPauseMenu->activeMenuOption = 0;
 			break;
 		default:

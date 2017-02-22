@@ -42,7 +42,7 @@ void Socket::setSocketAddress() {
         throw std::logic_error("Cannot set address of non existing socket.");
     }
 
-    setSocketOption();
+    setSocketOption(1);
 }
 
 void Socket::setSocketOption(const int optionValue) {

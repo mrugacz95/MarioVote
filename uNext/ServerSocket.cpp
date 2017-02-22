@@ -13,6 +13,7 @@ void ServerSocket::bindAddressToSocket() {
     int result = bind(descriptor, (sockaddr*) &address, sizeof(address));
 
     if (result == -1) {
+        std::cout << "Errno: " << errno << "\n";
         throw std::runtime_error("Error while binding address to server socket.");
     }
 }

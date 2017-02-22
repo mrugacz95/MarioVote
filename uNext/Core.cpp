@@ -105,21 +105,22 @@ void CCore::mainLoop() {
             input["D"] = keyDPressed;
             input["shift"] = keyShift;
             input["space"] = CCFG::keySpace;
-
-           	JSON mapJSON = *oMap;
-			std::cout << mapJSON << "\n";
+			input["isPaused"] = CCFG::getMM()->currentGameState == MenuManager::gameState::ePause;
 
 			server->sendToClients(input);
 		}
 
 		if (client) {
-			auto response = client->receiveFromServer();
+			auto response = client->receiveInput();
+
 			firstDir = response["direction"];
 			keyAPressed = response["A"];
 			keyS = response["S"];
 			keyDPressed = response["D"];
 			keyShift = response["shift"];
 			CCFG::keySpace = response["space"];
+
+			std::cout << "Pause: " << client->isGamePaused() << "\n";
 		}
 
 		Update();
@@ -225,8 +226,8 @@ void CCore::InputPlayer() {
 	if(mainEvent->type == SDL_WINDOWEVENT) {
 		switch(mainEvent->window.event) {
 			case SDL_WINDOWEVENT_FOCUS_LOST:
-				CCFG::getMM()->resetActiveOptionID(CCFG::getMM()->ePasue);
-				CCFG::getMM()->setViewID(CCFG::getMM()->ePasue);
+				CCFG::getMM()->resetActiveOptionID(CCFG::getMM()->ePause);
+				CCFG::getMM()->setViewID(CCFG::getMM()->ePause);
 				CCFG::getMusic()->PlayChunk(CCFG::getMusic()->cPASUE);
 				CCFG::getMusic()->PauseMusic();
 				break;
@@ -315,8 +316,8 @@ void CCore::InputPlayer() {
 				}
 			case SDLK_ESCAPE:
 				if(!keyMenuPressed && CCFG::getMM()->getViewID() == CCFG::getMM()->eGame) {
-					CCFG::getMM()->resetActiveOptionID(CCFG::getMM()->ePasue);
-					CCFG::getMM()->setViewID(CCFG::getMM()->ePasue);
+					CCFG::getMM()->resetActiveOptionID(CCFG::getMM()->ePause);
+					CCFG::getMM()->setViewID(CCFG::getMM()->ePause);
 					CCFG::getMusic()->PlayChunk(CCFG::getMusic()->cPASUE);
 					CCFG::getMusic()->PauseMusic();
 					keyMenuPressed = true;

@@ -409,6 +409,7 @@ public:
 	void setInEvent(bool inEvent);
 
 	friend void to_json(JSON& json, const Map& block);
+	void loadJson(const JSON& json);
 };
 
 
