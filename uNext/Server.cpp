@@ -48,7 +48,7 @@ void Server::stop() {
     started = false;
 }
 
-void Server::sendToClients(char *buffer, int count) {
+void Server::sendToClients(const unsigned char *buffer, int count) {
     int result;
     std::unordered_set<int> badClientsDescriptors;
 

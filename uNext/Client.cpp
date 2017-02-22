@@ -20,7 +20,7 @@ void Client::connect() {
 
 std::vector<unsigned char> Client::receiveFromServer() {
     std::vector<unsigned char> response;
-    response.resize(5);
+    response.resize(6);
 
     int result = read(socket.getDescriptor(), &response[0], response.size());
     if (result == -1) {

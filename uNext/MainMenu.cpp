@@ -122,6 +122,16 @@ void MainMenu::enter() {
                 uint16_t port = getServerPort();
                 CCore::createClient(address, port);
                 CCore::getClient()->connect();
+
+
+                CCFG::getMM()->getLoadingMenu()->updateTime();
+                CCore::getMap()->resetGameData();
+                CCore::getMap()->setCurrentLevelID(activeWorldID * 4 + activeSecondWorldID);
+                CCFG::getMM()->setViewID(CCFG::getMM()->eGameLoading);
+                CCFG::getMM()->getLoadingMenu()->loadingType = true;
+                CCore::getMap()->setSpawnPointID(0);
+
+                selectServerAddress = false;
             }
             break;
         case 1:
@@ -136,6 +146,7 @@ void MainMenu::enter() {
                 CCore::getMap()->setSpawnPointID(0);
                 CCore::createServer();
                 CCore::getServer()->start();
+
                 selectWorld = false;
             }
             break;

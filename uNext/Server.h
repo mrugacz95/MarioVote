@@ -38,7 +38,7 @@ public:
     void start();
     void stop();
     bool isStarted();
-    void sendToClients(char * buffer, int count);
+    void sendToClients(const unsigned char * buffer, int count);
 };
 
 

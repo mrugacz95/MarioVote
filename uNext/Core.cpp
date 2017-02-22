@@ -98,15 +98,27 @@ void CCore::mainLoop() {
 		MouseInput();
 
 		if (server && server->isStarted()) {
-			server->sendToClients("12345", 5);
+			unsigned char keys[6];
+
+			keys[0] = static_cast<unsigned char>(firstDir);
+			keys[1] = static_cast<unsigned char>(keyAPressed);
+			keys[2] = static_cast<unsigned char>(keyS);
+			keys[3] = static_cast<unsigned char>(keyDPressed);
+			keys[4] = static_cast<unsigned char>(keyShift);
+			keys[5] = static_cast<unsigned char>(CCFG::keySpace);
+
+			server->sendToClients(keys, 6);
 		}
 
 		if (client) {
 			auto response = client->receiveFromServer();
-			std::cout << "Response: ";
-			for (auto& sign : response) {
-				std::cout << sign;
-			}
+			firstDir = static_cast<bool>(response[0]);
+			keyAPressed = static_cast<bool>(response[1]);
+			keyS = static_cast<bool>(response[2]);
+			keyDPressed = static_cast<bool>(response[3]);
+			keyShift = static_cast<bool>(response[4]);
+			CCFG::keySpace = static_cast<bool>(response[5]);
+			std::cout << "Response: " << firstDir << keyAPressed << keyS << keyDPressed << keyShift;
 			std::cout << "\n";
 		}
 
@@ -209,6 +221,7 @@ void CCore::InputMenu() {
 }
 
 void CCore::InputPlayer() {
+	/*
 	if(mainEvent->type == SDL_WINDOWEVENT) {
 		switch(mainEvent->window.event) {
 			case SDL_WINDOWEVENT_FOCUS_LOST:
@@ -219,6 +232,7 @@ void CCore::InputPlayer() {
 				break;
 		}
 	}
+	 */
 
 	if(mainEvent->type == SDL_KEYUP) {
 		if(mainEvent->key.keysym.sym == CCFG::keyIDD) {
@@ -283,14 +297,12 @@ void CCore::InputPlayer() {
 		
 		if(mainEvent->key.keysym.sym == CCFG::keyIDSpace) {
 			if(!CCFG::keySpace) {
-				oMap->getPlayer()->jump();
 				CCFG::keySpace = true;
 			}
 		}
 		
 		if(mainEvent->key.keysym.sym == CCFG::keyIDShift) {
 			if(!keyShift) {
-				oMap->getPlayer()->startRun();
 				keyShift = true;
 			}
 		}
@@ -329,6 +341,14 @@ void CCore::InputPlayer() {
 		} else if(!keyAPressed && oMap->getPlayer()->getMoveSpeed() > 0 && firstDir != oMap->getPlayer()->getMoveDirection()) {
 			oMap->getPlayer()->setChangeMoveDirection();
 		}
+	}
+
+	if (CCFG::keySpace) {
+		oMap->getPlayer()->jump();
+	}
+
+	if (keyShift) {
+		oMap->getPlayer()->startRun();
 	}
 
 	if(oMap->getPlayer()->getMove() && !keyAPressed && !keyDPressed) {
