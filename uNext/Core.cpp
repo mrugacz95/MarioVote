@@ -107,30 +107,22 @@ void CCore::mainLoop() {
             input["space"] = CCFG::keySpace;
 			input["isPaused"] = CCFG::getMM()->currentGameState == MenuManager::gameState::ePause;
 
-			//TODO Only 29kB now!
-			static int count;
-			count++;
-			count %= 60;
-			if (count == 0) {
-				JSON mapJSON = oMap;
-				auto dumped = mapJSON.dump();
-				std::cout << "Size: " << dumped.size() << "\n";
-				input["map"] = oMap;
-			}
 
 			server->sendToClients(input);
 		}
 
 		if (client) {
 			auto response = client->receiveInput();
-            if(response==NULL)
+            if(response==NULL) {
                 return;
-			firstDir = response["direction"];
-			keyAPressed = response["A"];
-			keyS = response["S"];
-			keyDPressed = response["D"];
-			keyShift = response["shift"];
-			CCFG::keySpace = response["space"];
+            } else {
+                firstDir = response["direction"];
+                keyAPressed = response["A"];
+                keyS = response["S"];
+                keyDPressed = response["D"];
+                keyShift = response["shift"];
+                CCFG::keySpace = response["space"];
+            }
 		}
 
 		Update();

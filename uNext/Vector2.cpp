@@ -28,3 +28,12 @@ int Vector2::getY() {
 void Vector2::setY(int Y) {
 	this->Y = Y;
 }
+
+void to_json(JSON &json, const Vector2 *vector) {
+	json = JSON({vector->X ,vector->Y});
+}
+
+void from_json(const JSON &json, Vector2 *vector) {
+	vector->X = json[0];
+	vector->Y = json[1];
+}

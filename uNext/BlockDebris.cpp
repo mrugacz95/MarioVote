@@ -66,3 +66,45 @@ void BlockDebris::Draw(SDL_Renderer* rR) {
 int BlockDebris::getDebrisState() {
 	return debrisState;
 }
+
+void to_json(JSON &json, const BlockDebris *block) {
+	json = JSON({
+			block->debrisState,
+			block->vPositionL,
+			block->vPositionR,
+			block->vPositionL2,
+			block->vPositionR2,
+			block->iFrameID,
+			block->fSpeedX,
+			block->fSpeedY,
+			block->bRotate
+				});
+}
+
+void from_json(const JSON &json, BlockDebris *block) {
+	block->debrisState = json[0];
+	from_json(json[1], block->vPositionL);
+	from_json(json[2], block->vPositionR);
+	from_json(json[3], block->vPositionL2);
+	from_json(json[4], block->vPositionR2);
+	block->iFrameID = json[5];
+	block->fSpeedX = json[6];
+	block->fSpeedY = json[7];
+	block->bRotate = json[8];
+}
+
+void to_json(JSON &json, const std::vector<BlockDebris *> &blocks) {
+	std::vector<JSON> blocksVector;
+	for (auto& block : blocks) {
+		blocksVector.push_back(block);
+	}
+
+	json = blocksVector;
+}
+
+void from_json(const JSON &json, std::vector<BlockDebris *> &blocks) {
+	for (int i = 0; i < blocks.size(); i++) {
+		auto blockJSON = json[i];
+		from_json(blockJSON, blocks[i]);
+	}
+}

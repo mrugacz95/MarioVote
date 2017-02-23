@@ -30,6 +30,11 @@ public:
 	void Draw(SDL_Renderer* rR);
 
 	int getDebrisState();
+
+	friend void to_json(JSON& json, const BlockDebris* block);
+	friend void from_json(const JSON& json, BlockDebris* block);
+	friend void to_json(JSON& json, const std::vector<BlockDebris*>& blocks);
+	friend void from_json(const JSON& json, std::vector<BlockDebris*>& blocks);
 };
 
 #endif
