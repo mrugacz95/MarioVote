@@ -10811,6 +10811,7 @@ void to_json(JSON &json, const Map *map) {
     json["inEvent"] = static_cast<int>(map->inEvent);
 
     json["event"] = map->oEvent;
+    json["player"] = map->oPlayer;
 }
 
 void from_json(const JSON &json, Map *map) {
@@ -10838,4 +10839,5 @@ void from_json(const JSON &json, Map *map) {
     map->inEvent = json["inEvent"];
 
     from_json(json["event"], map->oEvent);
+    from_json(json["player"], map->oPlayer);
 }

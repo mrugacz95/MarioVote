@@ -1258,12 +1258,86 @@ CIMG* Player::getMarioLVLUP() {
 	return tMarioLVLUP;
 }
 
-//void Player::from_json(const JSON &json, Player* player) {
-//	player->fXPos=json["fXPos"];
-//	player->fYPos=json["fYPos"];
-//}
-//
-//void Player::to_json(JSON &json, const Player *player) {
-//	json["fXPos"] = player->fXPos;
-//	json["fYPos"] = player->fYPos;
-//}
+void to_json(JSON &json, const Player *player) {
+	json = JSON({
+			player->iSpriteID,
+			player->iMoveAnimationTime,
+			player->fXPos,
+			player->fYPos,
+			player->iNumOfLives,
+			player->unKillAble,
+			player->starEffect,
+			player->unKillAbleTimeFrameID,
+			player->unKillAbleFrameID,
+			player->inLevelDownAnimation,
+			player->inLevelDownAnimationFrameID,
+			player->iScore,
+			player->iCoins,
+			player->iComboPoints,
+			player->iFrameID,
+			player->powerLVL,
+			player->inLevelAnimation,
+			player->inLevelAnimationType,
+			player->inLevelAnimationFrameID,
+			player->moveDirection,
+			player->bMove,
+			player->changeMoveDirection,
+			player->newMoveDirection,
+			player->currentMaxMove,
+			player->moveSpeed,
+			player->iTimePassed,
+			player->bSquat,
+			player->onPlatformID,
+			player->jumpState,
+			player->startJumpSpeed,
+			player->currentJumpSpeed,
+			player->jumpDistance,
+			player->currentJumpDistance,
+			player->currentFallingSpeed,
+			player->springJump,
+			player->nextBubbleTime,
+			player->nextFallFrameID,
+			player->nextFallFrameID,
+				});
+}
+
+void from_json(const JSON &json, Player *player) {
+	player->iSpriteID = json[0];
+	player->iMoveAnimationTime = json[0];
+	player->fXPos = json[0];
+	player->fYPos = json[0];
+	player->iNumOfLives = json[0];
+	player->unKillAble = json[0];
+	player->starEffect = json[0];
+	player->unKillAbleTimeFrameID = json[0];
+	player->unKillAbleFrameID = json[0];
+	player->inLevelDownAnimation = json[0];
+	player->inLevelDownAnimationFrameID = json[0];
+	player->iScore = json[0];
+	player->iCoins = json[0];
+	player->iComboPoints = json[0];
+	player->iFrameID = json[0];
+	player->powerLVL = json[0];
+	player->inLevelAnimation = json[0];
+	player->inLevelAnimationType = json[0];
+	player->inLevelAnimationFrameID = json[0];
+	player->moveDirection = json[0];
+	player->bMove = json[0];
+	player->changeMoveDirection = json[0];
+	player->newMoveDirection = json[0];
+	player->currentMaxMove = json[0];
+	player->moveSpeed = json[0];
+	player->iTimePassed = json[0];
+	player->bSquat = json[0];
+	player->onPlatformID = json[0];
+	player->jumpState = json[0];
+	player->startJumpSpeed = json[0];
+	player->currentJumpSpeed = json[0];
+	player->jumpDistance = json[0];
+	player->currentJumpDistance = json[0];
+	player->currentFallingSpeed = json[0];
+	player->springJump = json[0];
+	player->nextBubbleTime = json[0];
+	player->nextFallFrameID = json[0];
+	player->nextFallFrameID = json[0];
+}
