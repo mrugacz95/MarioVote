@@ -10784,11 +10784,10 @@ Flag *Map::getFlag() {
 }
 
 void to_json(JSON &json, const Map *map) {
-    json["fXPos"] = map->fXPos;
-    json["fYPos"] = map->fYPos;
+    json["XPos"] = map->fXPos;
+    json["YPos"] = map->fYPos;
     json["blocks"] = map->vBlock;
     json["minionBlocks"] = map->vMinion;
-    json["player"] = map->oPlayer;
 
     int blockPos = (int) (map->fXPos / 32) + 1;
     if (blockPos > 0) blockPos = 0;
@@ -10798,6 +10797,18 @@ void to_json(JSON &json, const Map *map) {
     json["mapLevels"] = toSend;
 
     json["blockDebris"] = map->lBlockDebris;
+    json["platforms"] = map->vPlatform;
+    json["texts"] = map->vLevelText;
+    json["bubbles"] = map->lBubble;
+
+    json["currentLevel"] = map->currentLevelID;
+    json["levelType"] = map->iLevelType;
+    json["underwater"] = map->underWater;
+    json["spawnPoint"] = map->iSpawnPointID;
+    json["moveMap"] = static_cast<int>(map->bMoveMap);
+    json["frame"] = map->iFrameID;
+    json["mapTime"] = map->iMapTime;
+    json["inEvent"] = static_cast<int>(map->inEvent);
 }
 
 void from_json(const JSON &json, Map *map) {
@@ -10805,11 +10816,22 @@ void from_json(const JSON &json, Map *map) {
         std::cout << "pusty";
         return;
     }
-    map->fXPos = json["fXPos"].get<float>();
-    map->fYPos = json["fYPos"].get<float>();
+    map->fXPos = json["XPos"].get<float>();
+    map->fYPos = json["YPos"].get<float>();
     from_json(json["blocks"], map->vBlock);
     from_json(json["minionBlocks"], map->vMinion);
     from_json(json["mapLevels"], map->lMap);
     from_json(json["blockDebris"], map->lBlockDebris);
-    //from_json(json["player"], map->oPlayer);
+    from_json(json["platforms"], map->vPlatform);
+    from_json(json["texts"], map->vLevelText);
+    from_json(json["bubbles"], map->lBubble);
+
+    map->currentLevelID = json["currentLevel"];
+    map->iLevelType = json["levelType"];
+    map->underWater = json["underwater"];
+    map->iSpawnPointID = json["spawnPoint"];
+    map->bMoveMap = json["moveMap"];
+    map->iFrameID = json["frame"];
+    map->iMapTime = json["mapTime"];
+    map->inEvent = json["inEvent"];
 }

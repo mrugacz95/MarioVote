@@ -107,6 +107,11 @@ void CCore::mainLoop() {
             input["space"] = CCFG::keySpace;
 			input["isPaused"] = CCFG::getMM()->currentGameState == MenuManager::gameState::ePause;
 
+			JSON mapJSON;
+			to_json(mapJSON, oMap);
+			auto dump = mapJSON.dump();
+			std::cout << "Dump size: " << dump.size() << "\n";
+			JSON::parse(dump);
 
 			server->sendToClients(input);
 		}

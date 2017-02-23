@@ -4,6 +4,10 @@
 #define PLATFORM_H
 
 #include "header.h"
+#include "lib/json.hpp"
+
+using JSON = nlohmann::json;
+
 
 class Platform
 {
@@ -43,6 +47,11 @@ public:
 	int getTypeID();
 	void setTypeID(int iType);
 	void turnON();
+
+	friend void to_json(JSON& json, const Platform* platform);
+	friend void from_json(const JSON& json, Platform* platform);
+	friend void to_json(JSON& json, const std::vector<Platform*>& platforms);
+	friend void from_json(const JSON& json, std::vector<Platform*>& platforms);
 };
 
 #endif

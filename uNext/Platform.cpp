@@ -227,3 +227,49 @@ int Platform::getTypeID() {
 void Platform::turnON() {
 	this->ON = true;
 }
+
+void to_json(JSON& json, const Platform* platform) {
+	json = JSON({
+						platform->iType,
+						platform->iXStart,
+						platform->iXEnd,
+						platform->iYStart,
+						platform->iYEnd,
+						platform->fXPos,
+						platform->fYPos,
+						platform->direction,
+						platform->iSize,
+						platform->ON,
+						platform->seesawPlatformID
+				});
+}
+
+void from_json(const JSON& json, Platform* platform) {
+	platform->iType = json[0];
+	platform->iXStart = json[1];
+	platform->iXEnd = json[2];
+	platform->iYStart = json[3];
+	platform->iYEnd = json[4];
+	platform->fXPos = json[5];
+	platform->fYPos = json[6];
+	platform->direction = json[7];
+	platform->iSize = json[8];
+	platform->ON = json[9];
+	platform->seesawPlatformID = json[10];
+}
+
+void to_json(JSON& json, const std::vector<Platform*>& platforms) {
+	std::vector<JSON> platformsVector;
+	for (auto& platform : platforms) {
+		platformsVector.push_back(platform);
+	}
+
+	json = platformsVector;
+}
+
+void from_json(const JSON& json, std::vector<Platform*>& platforms) {
+	for (int i = 0; i < platforms.size(); i++) {
+		auto platformJSON = json[i];
+		from_json(platformJSON, platforms[i]);
+	}
+}

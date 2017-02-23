@@ -40,3 +40,35 @@ int Bubble::getBlockID() {
 bool Bubble::getDestroy() {
 	return bDestoy;
 }
+
+void to_json(JSON& json, const Bubble* bubble) {
+	json = JSON({
+			bubble->iXPos,
+			bubble->iYPos,
+			bubble->bDestoy,
+			bubble->iBlockID
+				});
+}
+
+void from_json(const JSON& json, Bubble* bubble) {
+	bubble->iXPos = json[0];
+	bubble->iYPos = json[1];
+	bubble->bDestoy = json[2];
+	bubble->iBlockID = json[3];
+}
+
+void to_json(JSON& json, const std::vector<Bubble*>& bubbles) {
+	std::vector<JSON> bubblesVector;
+	for (auto& bubble : bubbles) {
+		bubblesVector.push_back(bubble);
+	}
+
+	json = bubblesVector;
+}
+
+void from_json(const JSON& json, std::vector<Bubble*>& bubbles) {
+	for (auto& bubble : bubbles) {
+		auto bubbleJSON = json[bubble->iBlockID];
+		from_json(bubbleJSON, bubble);
+	}
+}
