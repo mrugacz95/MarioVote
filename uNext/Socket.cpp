@@ -42,11 +42,13 @@ void Socket::setSocketAddress() {
         throw std::logic_error("Cannot set address of non existing socket.");
     }
 
-    setSocketOption(1);
+    setSocketOption(SOL_SOCKET, SO_REUSEADDR, 1);
+    setSocketOption(SOL_TCP, TCP_NODELAY, 1);
+    setSocketOption(SOL_TCP, TCP_CORK, 0);
 }
 
-void Socket::setSocketOption(const int optionValue) {
-    int result = setsockopt(descriptor, SOL_SOCKET, SO_REUSEADDR, (char*) &optionValue, sizeof(optionValue));
+void Socket::setSocketOption(const int optionLevel, const int optionName, const int value) {
+    int result = setsockopt(descriptor, optionLevel, optionName, (char*) &value, sizeof(value));
 
     if (result == -1) {
         throw std::runtime_error("Error while setting socket option.");

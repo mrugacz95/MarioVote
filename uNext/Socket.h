@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <netinet/tcp.h>
 #include <arpa/inet.h>
 #include <ifaddrs.h>
 #include <netdb.h>
@@ -28,7 +29,7 @@ protected:
     int createSocket() const;
     sockaddr_in createAddress(const char * ipv4Address = nullptr, const uint16_t port = 0) const;
     void setSocketAddress();
-    void setSocketOption(const int optionValue = 1);
+    void setSocketOption(const int optionLevel, const int optionName, const int value);
     std::string getInterfaceAddress() const;
 
 public:

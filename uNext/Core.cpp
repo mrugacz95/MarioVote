@@ -116,9 +116,6 @@ void CCore::mainLoop() {
 				JSON mapJSON;
 				to_json(mapJSON, oMap);
 				mapJSON["isPaused"] = input["isPaused"];
-				//auto dumped = mapJSON.dump();
-				//mapJSON = JSON::parse(dumped);
-				//from_json(mapJSON, oMap);
 				server->sendToClientsWithStatus(ClientStatus::NOT_SYNCHRONIZED, mapJSON);
 			}
 

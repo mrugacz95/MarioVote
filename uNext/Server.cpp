@@ -87,7 +87,7 @@ bool Server::send(int descriptor, void *buffer, size_t size) {
         bytesWritten = write(descriptor, buffer, size);
 
         if (bytesWritten == -1) {
-            std::cerr << "Error while sending data to server.\n";
+            std::cerr << "Error while sending data to client.\n";
             return false;
         }
 
