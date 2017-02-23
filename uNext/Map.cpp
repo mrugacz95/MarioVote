@@ -10807,5 +10807,5 @@ void from_json(const JSON &json, Map *map) {
     from_json(json["blocks"], map->vBlock);
     from_json(json["minionBlocks"], map->vMinion);
     from_json(json["mapLevels"], map->lMap);
-    from_json(json["player"], map->oPlayer);
+    //from_json(json["player"], map->oPlayer);
 }
