@@ -50,7 +50,7 @@ Music::Music(void) {
 	vChunk.push_back(loadChunk("castleend"));
 	vChunk.push_back(loadChunk("princessmusic"));
 
-	setVolume(100);
+	setVolume(0);
 	this->currentMusic = mNOTHING;
 }
 

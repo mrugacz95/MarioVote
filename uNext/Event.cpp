@@ -316,6 +316,8 @@ void Event::Normal() {
 						vNEWLength[stepID] -= iSpeed;
 						CCore::getMap()->getPlayer()->setMarioSpriteID(11);
 						break;
+					default:
+						break;
 				}
 			} else {
 				++stepID;
