@@ -1257,3 +1257,13 @@ Sprite* Player::getMarioSprite() {
 CIMG* Player::getMarioLVLUP() {
 	return tMarioLVLUP;
 }
+
+void Player::from_json(const JSON &json, Player* player) {
+	player->fXPos=json["fXPos"];
+	player->fYPos=json["fYPos"];
+}
+
+void to_json(JSON &json, const Player *player) {
+	json["fXPos"] = player->fXPos;
+	json["fYPos"] = player->fYPos;
+}

@@ -7,7 +7,9 @@
 #include "Vector2.h"
 #include <vector>
 #include <string>
+#include <lib/json.hpp>
 
+using JSON = nlohmann::json;
 class Player
 {
 private:
@@ -188,6 +190,8 @@ public:
 	void setCoins(unsigned int iCoins);
 
 	void setSpringJump(bool springJump);
+	friend void to_json(JSON& json, const Player* player);
+	friend void from_json(const JSON& json, Player* player);
 };
 
 #endif

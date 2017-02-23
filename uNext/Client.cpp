@@ -28,12 +28,18 @@ JSON Client::receiveInput() {
     }
 
     response.append(buffer.begin(), buffer.end());
+    try {
+        JSON json = JSON::parse(response);
 
-    JSON json = JSON::parse(response);
+        isServerPaused = json["isPaused"];
 
-    isServerPaused = json["isPaused"];
+        return json;
+    }
+    catch(std::invalid_argument){
+        std::cout<<"parse error\n";
+    }
+    return NULL;
 
-    return json;
 }
 
 JSON Client::synchronizeMap() {
