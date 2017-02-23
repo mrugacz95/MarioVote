@@ -382,3 +382,59 @@ void Event::resetRedraw() {
 	reDrawX.clear();
 	reDrawY.clear();
 }
+
+void to_json(JSON& json, const Event* event) {
+	std::vector<int> oldAnimationTypes(event->vOLDDir.begin(), event->vOLDDir.end());
+	std::vector<int> newAnimationTypes(event->vNEWDir.begin(), event->vNEWDir.end());
+
+	json = JSON({
+			event->bState,
+			event->stepID,
+			oldAnimationTypes,
+			event->vOLDLength,
+			newAnimationTypes,
+			event->vNEWLength,
+			event->reDrawX,
+			event->reDrawY,
+			event->eventTypeID,
+			event->iSpeed,
+			event->newLevelType,
+			event->newMapXPos,
+			event->newPlayerXPos,
+			event->newPlayerYPos,
+			event->newMoveMap,
+			event->iTime,
+			event->iDelay,
+			event->newCurrentLevel,
+			event->inEvent,
+			event->newUnderWater,
+			event->endGame
+				});
+}
+
+void from_json(const JSON& json, Event* event) {
+	std::vector<Event::animationType> oldAnimationTypes(json[2].begin(), json[2].end());
+	std::vector<Event::animationType> newAnimationTypes(json[4].begin(), json[4].end());
+
+	event->bState = json[0];
+	event->stepID = json[1];
+	event->vOLDDir = oldAnimationTypes;
+	event->vOLDLength = json[3].get<std::vector<int>>();
+	event->vNEWDir = newAnimationTypes;
+	event->vNEWLength = json[5].get<std::vector<int>>();
+	event->reDrawX = json[6].get<std::vector<int>>();
+	event->reDrawY = json[7].get<std::vector<int>>();
+	event->eventTypeID = json[8];
+	event->iSpeed = json[9];
+	event->newLevelType = json[10];
+	event->newMapXPos = json[11];
+	event->newPlayerXPos = json[12];
+	event->newPlayerYPos = json[13];
+	event->newMoveMap = json[14];
+	event->iTime = json[15];
+	event->iDelay = json[16];
+	event->newCurrentLevel = json[17];
+	event->inEvent = json[18];
+	event->newUnderWater = json[19];
+	event->endGame = json[20];
+}

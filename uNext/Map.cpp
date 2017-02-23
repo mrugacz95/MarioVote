@@ -10809,6 +10809,8 @@ void to_json(JSON &json, const Map *map) {
     json["frame"] = map->iFrameID;
     json["mapTime"] = map->iMapTime;
     json["inEvent"] = static_cast<int>(map->inEvent);
+
+    json["event"] = map->oEvent;
 }
 
 void from_json(const JSON &json, Map *map) {
@@ -10834,4 +10836,6 @@ void from_json(const JSON &json, Map *map) {
     map->iFrameID = json["frame"];
     map->iMapTime = json["mapTime"];
     map->inEvent = json["inEvent"];
+
+    from_json(json["event"], map->oEvent);
 }

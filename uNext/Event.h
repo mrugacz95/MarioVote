@@ -5,6 +5,10 @@
 
 #include "header.h"
 #include <vector>
+#include "lib/json.hpp"
+
+using JSON = nlohmann::json;
+
 
 class Event
 {
@@ -95,6 +99,9 @@ public:
 	void newLevel();
 
 	void resetRedraw();
+
+	friend void to_json(JSON& json, const Event* event);
+	friend void from_json(const JSON& json, Event* event);
 };
 
 #endif
