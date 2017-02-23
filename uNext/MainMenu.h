@@ -17,7 +17,6 @@ private:
 	SDL_Rect rSelectServerAddr;
 
 	std::string serverAddress = "192.168.8.102:6789";
-	std::string getServerAddress();
 	uint16_t getServerPort();
 public:
 	MainMenu(void);
@@ -25,6 +24,7 @@ public:
 
 	void Update();
 	void Draw(SDL_Renderer* rR);
+	std::string getServerAddress();
 
 	void enter();
 	void escape();

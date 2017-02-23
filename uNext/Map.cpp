@@ -10790,16 +10790,6 @@ void to_json(JSON &json, const Map *map) {
     json["blocks"] = map->vBlock;
     json["minionBlocks"] = map->vMinion;
 
-    /*
-    int blockPos = (int) (map->fXPos / 32) + 1;
-    if (blockPos > 0) blockPos = 0;
-    auto start = map->lMap.begin() - blockPos;
-    auto end = start + 27;
-    std::vector<std::vector<MapLevel *> > toSend(start, end);
-    json["mapLevels"] = toSend;
-    */
-    //json["mapLevels"] = map->lMap;
-
     json["blockDebris"] = map->lBlockDebris;
     json["platforms"] = map->vPlatform;
     json["texts"] = map->vLevelText;
@@ -10816,7 +10806,6 @@ void to_json(JSON &json, const Map *map) {
 
     json["event"] = map->oEvent;
     json["player"] = map->oPlayer;
-
 }
 
 void from_json(const JSON &json, Map *map) {
@@ -10825,7 +10814,6 @@ void from_json(const JSON &json, Map *map) {
 
     from_json(json["blocks"], map->vBlock);
     from_json(json["minionBlocks"], map->vMinion);
-    //from_json(json["mapLevels"], map->lMap);
     from_json(json["blockDebris"], map->lBlockDebris);
     from_json(json["platforms"], map->vPlatform);
     from_json(json["texts"], map->vLevelText);

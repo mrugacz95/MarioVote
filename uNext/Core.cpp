@@ -106,13 +106,11 @@ void CCore::mainLoop() {
             input["S"] = keyS;
             input["D"] = keyDPressed;
             input["shift"] = keyShift;
-            input["space"] = CCFG::keySpace;
+			input["space"] = CCFG::keySpace;
 			input["isPaused"] = CCFG::getMM()->currentGameState == MenuManager::gameState::ePause;
 
-			static int count = 0;
-			++count;
-			count %= 10;
-			if (count == 0) {
+			if ((clock() - syncTime)/CLOCKS_PER_SEC > 0.01) {
+				syncTime = clock();
 				JSON mapJSON;
 				to_json(mapJSON, oMap);
 				mapJSON["isPaused"] = input["isPaused"];
@@ -142,17 +140,6 @@ void CCore::mainLoop() {
 		}
 
 		Draw();
-
-		/*CCFG::getText()->Draw(rR, "FPS:" + std::to_string(iNumOfFPS), CCFG::GAME_WIDTH - CCFG::getText()->getTextWidth("FPS:" + std::to_string(iNumOfFPS), 8) - 8, 5, 8);
-
-		if(SDL_GetTicks() - 1000 >= lFPSTime) {
-			lFPSTime = SDL_GetTicks();
-			iNumOfFPS = iFPS;
-			iFPS = 0;
-		}
-
-		++iFPS;*/
-
 		SDL_RenderPresent(rR);
 		
 		if(SDL_GetTicks() - frameTime < MIN_FRAME_TIME) {
@@ -239,18 +226,6 @@ void CCore::InputMenu() {
 }
 
 void CCore::InputPlayer() {
-	/*
-	if(mainEvent->type == SDL_WINDOWEVENT) {
-		switch(mainEvent->window.event) {
-			case SDL_WINDOWEVENT_FOCUS_LOST:
-				CCFG::getMM()->resetActiveOptionID(CCFG::getMM()->ePause);
-				CCFG::getMM()->setViewID(CCFG::getMM()->ePause);
-				CCFG::getMusic()->PlayChunk(CCFG::getMusic()->cPASUE);
-				CCFG::getMusic()->PauseMusic();
-				break;
-		}
-	}
-	 */
 
 	if(mainEvent->type == SDL_KEYUP) {
 		if(mainEvent->key.keysym.sym == CCFG::keyIDD) {

@@ -19,6 +19,7 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* rR;
 	SDL_Event* mainEvent;
+	clock_t syncTime = 0;
 
 	// ----- FPS -----
 
