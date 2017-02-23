@@ -1290,7 +1290,7 @@ void to_json(JSON &json, const Player *player) {
 			player->onPlatformID,
 			player->jumpState,
 			player->startJumpSpeed,
-			player->currentJumpSpeed,
+			(player->currentJumpSpeed ? player->currentJumpSpeed : 0.0f),
 			player->jumpDistance,
 			player->currentJumpDistance,
 			player->currentFallingSpeed,
@@ -1302,42 +1302,44 @@ void to_json(JSON &json, const Player *player) {
 }
 
 void from_json(const JSON &json, Player *player) {
+	std::cout << "Starting from_json player, jsonXPos = " << json[2] << "\n";
 	player->iSpriteID = json[0];
-	player->iMoveAnimationTime = json[0];
-	player->fXPos = json[0];
-	player->fYPos = json[0];
-	player->iNumOfLives = json[0];
-	player->unKillAble = json[0];
-	player->starEffect = json[0];
-	player->unKillAbleTimeFrameID = json[0];
-	player->unKillAbleFrameID = json[0];
-	player->inLevelDownAnimation = json[0];
-	player->inLevelDownAnimationFrameID = json[0];
-	player->iScore = json[0];
-	player->iCoins = json[0];
-	player->iComboPoints = json[0];
-	player->iFrameID = json[0];
-	player->powerLVL = json[0];
-	player->inLevelAnimation = json[0];
-	player->inLevelAnimationType = json[0];
-	player->inLevelAnimationFrameID = json[0];
-	player->moveDirection = json[0];
-	player->bMove = json[0];
-	player->changeMoveDirection = json[0];
-	player->newMoveDirection = json[0];
-	player->currentMaxMove = json[0];
-	player->moveSpeed = json[0];
-	player->iTimePassed = json[0];
-	player->bSquat = json[0];
-	player->onPlatformID = json[0];
-	player->jumpState = json[0];
-	player->startJumpSpeed = json[0];
-	player->currentJumpSpeed = json[0];
-	player->jumpDistance = json[0];
-	player->currentJumpDistance = json[0];
-	player->currentFallingSpeed = json[0];
-	player->springJump = json[0];
-	player->nextBubbleTime = json[0];
-	player->nextFallFrameID = json[0];
-	player->nextFallFrameID = json[0];
+	player->iMoveAnimationTime = json[1];
+	player->fXPos = json[2];
+	player->fYPos = json[3];
+	player->iNumOfLives = json[4];
+	player->unKillAble = json[5];
+	player->starEffect = json[6];
+	player->unKillAbleTimeFrameID = json[7];
+	player->unKillAbleFrameID = json[8];
+	player->inLevelDownAnimation = json[9];
+	player->inLevelDownAnimationFrameID = json[10];
+	player->iScore = json[11];
+	player->iCoins = json[12];
+	player->iComboPoints = json[13];
+	player->iFrameID = json[14];
+	player->powerLVL = json[15];
+	player->inLevelAnimation = json[16];
+	player->inLevelAnimationType = json[17];
+	player->inLevelAnimationFrameID = json[18];
+	player->moveDirection = json[19];
+	player->bMove = json[20];
+	player->changeMoveDirection = json[21];
+	player->newMoveDirection = json[22];
+	player->currentMaxMove = json[23];
+	player->moveSpeed = json[24];
+	player->iTimePassed = json[25];
+	player->bSquat = json[26];
+	player->onPlatformID = json[27];
+	player->jumpState = json[28];
+	player->startJumpSpeed = json[29].get<float>();
+	player->currentJumpSpeed = json[30].get<float>();
+	player->jumpDistance = json[31].get<float>();
+	player->currentJumpDistance = json[32].get<float>();
+	player->currentFallingSpeed = json[33].get<float>();
+	player->springJump = json[34];
+	player->nextBubbleTime = json[35];
+	player->nextFallFrameID = json[36];
+	player->nextFallFrameID = json[37];
+	std::cout << "Closing from_json player, playerXPos = " << player->getXPos() << "\n";
 }

@@ -18,14 +18,18 @@ class Client {
 
     bool isServerPaused = true;
 
+    unsigned long receiveSizeOfNextMessage();
+    void receive(void *buffer, size_t size);
+
 public:
     Client(const char *ipv4Address, const uint16_t port);
     ~Client();
 
     void connect();
-    JSON receiveInput();
+    JSON receiveMessage();
     bool isGamePaused();
-    JSON synchronizeMap();
+
+    bool isSynchronized = false;
 };
 
 

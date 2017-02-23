@@ -142,6 +142,9 @@ void to_json(JSON &json, const std::vector<MapLevel *> &mapLevels) {
 }
 
 void from_json(const JSON &json, std::vector<MapLevel *> &mapLevels) {
+	if (json.empty()) {
+		return;
+	}
 	for (int i = 0; i < mapLevels.size(); i++) {
 		auto mapLevelsJSON = json[i];
 		from_json(mapLevelsJSON, mapLevels[i]);

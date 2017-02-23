@@ -34,6 +34,8 @@ void Server::listen() {
         }
 
         clientsDescriptors.insert(clientDescriptor);
+        clientsStatuses[clientDescriptor] = ClientStatus::NOT_SYNCHRONIZED;
+        //clientsStatuses[clientDescriptor] = ClientStatus::SYNCHRONIZED;
     }
 }
 
@@ -48,26 +50,50 @@ void Server::stop() {
     started = false;
 }
 
-void Server::sendToClients(JSON json) {
-    std::string dumped = json.dump();
-    auto buffer = std::vector<char>(dumped.begin(), dumped.end());
-
-    ssize_t result;
+void Server::sendToClientsWithStatus(ClientStatus status, JSON json) {
     std::unordered_set<int> badClientsDescriptors;
 
     for (auto& clientDescriptor : clientsDescriptors) {
-        result = write(clientDescriptor, &buffer[0], buffer.size());
-
-        if (result != buffer.size()) {
-            badClientsDescriptors.insert(clientDescriptor);
+        if (clientsStatuses[clientDescriptor] == status) {
+            if (sendMessage(clientDescriptor, json)) {
+                clientsStatuses[clientDescriptor] = ClientStatus::SYNCHRONIZED;
+            } else {
+                badClientsDescriptors.insert(clientDescriptor);
+            }
         }
     }
 
     for (auto& clientDescriptor : badClientsDescriptors) {
         clientsDescriptors.erase(clientDescriptor);
+        std::cout << "Removing connection (fd: " << clientDescriptor << ")\n";
     }
 }
 
 bool Server::isStarted() {
     return started;
+}
+
+bool Server::sendMessage(int descriptor, JSON message) {
+    auto dumped = message.dump();
+    auto size = dumped.size();
+
+    return (send(descriptor, &size, sizeof(unsigned long)) && send(descriptor, &dumped[0], size));
+}
+
+bool Server::send(int descriptor, void *buffer, size_t size) {
+    ssize_t bytesWritten;
+
+    while (size != 0) {
+        bytesWritten = write(descriptor, buffer, size);
+
+        if (bytesWritten == -1) {
+            std::cerr << "Error while sending data to server.\n";
+            return false;
+        }
+
+        buffer += bytesWritten;
+        size -= bytesWritten;
+    }
+
+    return true;
 }

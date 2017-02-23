@@ -18,34 +18,52 @@ void Client::connect() {
     socket.connect();
 }
 
-JSON Client::receiveInput() {
+JSON Client::receiveMessage() {
     std::string response;
-    std::vector<char> buffer(4096);
 
-    auto bytes = read(socket.getDescriptor(), &buffer[0], buffer.size());
-    if (bytes == -1) {
-        throw std::runtime_error("Error while receiving data from server.");
-    }
+    const unsigned long sizeOfMessage = receiveSizeOfNextMessage();
 
+    std::vector<char> buffer(sizeOfMessage);
+    receive(&buffer[0], sizeOfMessage);
     response.append(buffer.begin(), buffer.end());
+
+    JSON json;
     try {
-        JSON json = JSON::parse(response);
+        json = JSON::parse(response);
+    } catch(std::invalid_argument) {
+        std::cout << "Parse error!\nDumped: " << response << "\n";
+    }
 
+    if (json.find("isPaused") != json.end()) {
         isServerPaused = json["isPaused"];
-
-        return json;
     }
-    catch(std::invalid_argument){
-        std::cout<<"parse error\n";
-    }
-    return NULL;
 
-}
-
-JSON Client::synchronizeMap() {
-    return JSON();
+    return json;
 }
 
 bool Client::isGamePaused() {
     return isServerPaused;
+}
+
+unsigned long Client::receiveSizeOfNextMessage() {
+    unsigned long size = 0;
+
+    receive(&size, sizeof(unsigned long));
+
+    return size;
+}
+
+void Client::receive(void *buffer, size_t size) {
+    ssize_t bytesRead = 0;
+
+    while(size != 0) {
+        bytesRead += read(socket.getDescriptor(), buffer, size);
+
+        if (bytesRead == -1) {
+            throw std::runtime_error("Error while receiving data from server.");
+        }
+
+        buffer += bytesRead;
+        size -= bytesRead;
+    }
 }

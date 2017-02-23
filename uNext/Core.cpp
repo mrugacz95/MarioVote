@@ -97,6 +97,8 @@ void CCore::mainLoop() {
 		Input();
 		MouseInput();
 
+		Update();
+
 		if (server && server->isStarted()) {
             JSON input;
             input["direction"] = firstDir;
@@ -107,30 +109,41 @@ void CCore::mainLoop() {
             input["space"] = CCFG::keySpace;
 			input["isPaused"] = CCFG::getMM()->currentGameState == MenuManager::gameState::ePause;
 
-			JSON mapJSON;
-			to_json(mapJSON, oMap);
-			auto dump = mapJSON.dump();
-			std::cout << "Dump size: " << dump.size() << "\n";
-			JSON::parse(dump);
+			static int count = 0;
+			++count;
+			count %= 10;
+			if (count == 0) {
+				JSON mapJSON;
+				to_json(mapJSON, oMap);
+				mapJSON["isPaused"] = input["isPaused"];
+				//auto dumped = mapJSON.dump();
+				//mapJSON = JSON::parse(dumped);
+				//from_json(mapJSON, oMap);
+				server->sendToClientsWithStatus(ClientStatus::NOT_SYNCHRONIZED, mapJSON);
+			}
 
-			server->sendToClients(input);
+			server->sendToClientsWithStatus(ClientStatus::SYNCHRONIZED, input);
 		}
 
-		if (client) {
-			auto response = client->receiveInput();
-            if(response==NULL) {
-                return;
-            } else {
-                firstDir = response["direction"];
-                keyAPressed = response["A"];
-                keyS = response["S"];
-                keyDPressed = response["D"];
-                keyShift = response["shift"];
-                CCFG::keySpace = response["space"];
-            }
+		if (client && CCFG::getMM()->currentGameState == MenuManager::gameState::eGame) {
+			auto response = client->receiveMessage();
+
+			if (!response.empty()) {
+				if (client->isSynchronized) {
+					firstDir = response["direction"];
+					keyAPressed = response["A"];
+					keyS = response["S"];
+					keyDPressed = response["D"];
+					keyShift = response["shift"];
+					CCFG::keySpace = response["space"];
+				} else {
+					std::cout << "Synchronization: " << response << "\n";
+					from_json(response, CCore::getMap());
+					client->isSynchronized = true;
+				}
+			}
 		}
 
-		Update();
 		Draw();
 
 		/*CCFG::getText()->Draw(rR, "FPS:" + std::to_string(iNumOfFPS), CCFG::GAME_WIDTH - CCFG::getText()->getTextWidth("FPS:" + std::to_string(iNumOfFPS), 8) - 8, 5, 8);

@@ -10786,15 +10786,19 @@ Flag *Map::getFlag() {
 void to_json(JSON &json, const Map *map) {
     json["XPos"] = map->fXPos;
     json["YPos"] = map->fYPos;
+
     json["blocks"] = map->vBlock;
     json["minionBlocks"] = map->vMinion;
 
+    /*
     int blockPos = (int) (map->fXPos / 32) + 1;
     if (blockPos > 0) blockPos = 0;
     auto start = map->lMap.begin() - blockPos;
     auto end = start + 27;
     std::vector<std::vector<MapLevel *> > toSend(start, end);
     json["mapLevels"] = toSend;
+    */
+    //json["mapLevels"] = map->lMap;
 
     json["blockDebris"] = map->lBlockDebris;
     json["platforms"] = map->vPlatform;
@@ -10805,25 +10809,23 @@ void to_json(JSON &json, const Map *map) {
     json["levelType"] = map->iLevelType;
     json["underwater"] = map->underWater;
     json["spawnPoint"] = map->iSpawnPointID;
-    json["moveMap"] = static_cast<int>(map->bMoveMap);
+    json["moveMap"] = map->bMoveMap;
     json["frame"] = map->iFrameID;
     json["mapTime"] = map->iMapTime;
-    json["inEvent"] = static_cast<int>(map->inEvent);
+    json["inEvent"] = map->inEvent;
 
     json["event"] = map->oEvent;
     json["player"] = map->oPlayer;
+
 }
 
 void from_json(const JSON &json, Map *map) {
-    if (json == nullptr) {
-        std::cout << "pusty";
-        return;
-    }
     map->fXPos = json["XPos"].get<float>();
     map->fYPos = json["YPos"].get<float>();
+
     from_json(json["blocks"], map->vBlock);
     from_json(json["minionBlocks"], map->vMinion);
-    from_json(json["mapLevels"], map->lMap);
+    //from_json(json["mapLevels"], map->lMap);
     from_json(json["blockDebris"], map->lBlockDebris);
     from_json(json["platforms"], map->vPlatform);
     from_json(json["texts"], map->vLevelText);
@@ -10840,4 +10842,6 @@ void from_json(const JSON &json, Map *map) {
 
     from_json(json["event"], map->oEvent);
     from_json(json["player"], map->oPlayer);
+    std::cout << "Closing from_json map, playerXPos = " << map->oPlayer->getXPos() << "\n";
+
 }

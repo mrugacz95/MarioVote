@@ -24,13 +24,20 @@
 
 using JSON = nlohmann::json;
 
+enum class ClientStatus {
+    NOT_SYNCHRONIZED, SYNCHRONIZED
+};
 
 class Server {
     ServerSocket socket;
     std::unordered_set<int> clientsDescriptors;
+    std::map<int, ClientStatus> clientsStatuses;
 
     bool started = false;
     void listen();
+
+    bool sendMessage(int descriptor, JSON json);
+    bool send(int descriptor, void *buffer, size_t size);
 
 public:
     static const int QUEUE_SIZE = 10;
@@ -41,7 +48,7 @@ public:
     void start();
     void stop();
     bool isStarted();
-    void sendToClients(JSON json);
+    void sendToClientsWithStatus(ClientStatus status, JSON json);
 };
 
 

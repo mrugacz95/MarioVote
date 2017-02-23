@@ -123,7 +123,6 @@ void MainMenu::enter() {
                 CCore::createClient(address, port);
                 CCore::getClient()->connect();
 
-
                 CCFG::getMM()->getLoadingMenu()->updateTime();
                 CCore::getMap()->resetGameData();
                 CCore::getMap()->setCurrentLevelID(activeWorldID * 4 + activeSecondWorldID);
