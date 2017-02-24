@@ -44,7 +44,7 @@ void Socket::setSocketAddress() {
 
     setSocketOption(SOL_SOCKET, SO_REUSEADDR, 1);
     setSocketOption(SOL_TCP, TCP_NODELAY, 1);
-    setSocketOption(SOL_TCP, TCP_CORK, 0);
+    //setSocketOption(SOL_TCP, TCP_CORK, 0);
 }
 
 void Socket::setSocketOption(const int optionLevel, const int optionName, const int value) {

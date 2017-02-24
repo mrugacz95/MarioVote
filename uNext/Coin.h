@@ -4,6 +4,10 @@
 #define COIN_H
 
 #include "header.h"
+#include "lib/json.hpp"
+
+using JSON = nlohmann::json;
+
 
 class Coin
 {
@@ -27,6 +31,11 @@ public:
 	int getXPos();
 	int getYPos();
 	bool getDelete();
+
+	friend void to_json(JSON& json, const Coin* coin);
+	friend void from_json(const JSON& json, Coin* coin);
+	friend void to_json(JSON& json, const std::vector<Coin*>& coins);
+	friend void from_json(const JSON& json, std::vector<Coin*>& coins);
 };
 
 #endif

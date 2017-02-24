@@ -1,5 +1,5 @@
 /************************
- * @author £ukasz Jakowski
+ * @author ï¿½ukasz Jakowski
  * @since  20.04.2014 14:32
  * 
  ************************/
@@ -65,4 +65,40 @@ int Coin::getYPos() {
 
 bool Coin::getDelete() {
 	return bDelete;
+}
+
+void to_json(JSON& json, const Coin* coin) {
+	json = JSON({
+			coin->iXPos,
+			coin->iYPos,
+			coin->iSpriteID,
+			coin->iStepID,
+			coin->bTOP,
+			coin->bDelete
+				});
+}
+
+void from_json(const JSON& json, Coin* coin) {
+	coin->iXPos = json[0];
+	coin->iYPos = json[1];
+	coin->iSpriteID = json[2];
+	coin->iStepID = json[3];
+	coin->bTOP = json[4];
+	coin->bDelete = json[5];
+}
+
+void to_json(JSON& json, const std::vector<Coin*>& coins) {
+	std::vector<JSON> coinsVector;
+	for (auto& coin : coins) {
+		coinsVector.push_back(coin);
+	}
+
+	json = coinsVector;
+}
+
+void from_json(const JSON& json, std::vector<Coin*>& coins) {
+	for (int i = 0; i < coins.size(); i++) {
+		auto coinsJSON = json[i];
+		from_json(coinsJSON, coins[i]);
+	}
 }

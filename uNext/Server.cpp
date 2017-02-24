@@ -77,6 +77,8 @@ bool Server::sendMessage(int descriptor, JSON message) {
     auto dumped = message.dump();
     auto size = dumped.size();
 
+    std::cout << "Message size: " << size << "\n";
+
     return (send(descriptor, &size, sizeof(unsigned long)) && send(descriptor, &dumped[0], size));
 }
 

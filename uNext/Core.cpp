@@ -107,7 +107,6 @@ void CCore::mainLoop() {
             clientInput["isPaused"] = CCFG::getMM()->currentGameState == MenuManager::gameState::ePause;
             client->sendVoteToServer(clientInput);
         }
-		Update();
 
 		if (server && server->isStarted()) {
             JSON input;
@@ -119,12 +118,16 @@ void CCore::mainLoop() {
 			input["space"] = CCFG::keySpace;
 			input["isPaused"] = CCFG::getMM()->currentGameState == MenuManager::gameState::ePause;
 
-			if ((clock() - syncTime)/CLOCKS_PER_SEC > 0.01) {
-				syncTime = clock();
+			static auto last_synchronization = std::chrono::high_resolution_clock::now();
+			auto now = std::chrono::high_resolution_clock::now();
+			if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_synchronization).count() > 100) {
 				JSON mapJSON;
 				to_json(mapJSON, oMap);
 				mapJSON["isPaused"] = input["isPaused"];
 				server->sendToClientsWithStatus(ClientStatus::NOT_SYNCHRONIZED, mapJSON);
+
+				last_synchronization = now;
+				std::cout << "Server synchro: " << std::chrono::system_clock::to_time_t(last_synchronization) << "\n";
 			}
 
 			server->sendToClientsWithStatus(ClientStatus::SYNCHRONIZED, input);
@@ -142,13 +145,16 @@ void CCore::mainLoop() {
 					keyShift = response["shift"];
 					CCFG::keySpace = response["space"];
 				} else {
-					std::cout << "Synchronization: " << response << "\n";
+					auto now = std::chrono::system_clock::now();
+					std::cout << "Client: " << std::chrono::system_clock::to_time_t(now) << "\n";
+					std::cout << "Synchronization: " << response << " bytes\n";
 					from_json(response, CCore::getMap());
 					client->isSynchronized = true;
 				}
 			}
 		}
 
+		Update();
 		Draw();
 		SDL_RenderPresent(rR);
 		

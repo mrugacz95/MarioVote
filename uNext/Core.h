@@ -5,6 +5,7 @@
 
 //STD
 #include <memory>
+#include <chrono>
 
 #include "Map.h"
 #include "Server.h"
@@ -19,7 +20,6 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* rR;
 	SDL_Event* mainEvent;
-	clock_t syncTime = 0;
 
 	// ----- FPS -----
 

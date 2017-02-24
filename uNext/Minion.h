@@ -6,6 +6,10 @@
 #include "header.h"
 #include "CFG.h"
 #include "IMG.h"
+#include "lib/json.hpp"
+
+using JSON = nlohmann::json;
+
 
 class Minion
 {
@@ -80,6 +84,13 @@ public:
 	int getXPos();
 	int getYPos();
 	void setYPos(int iYPos);
+
+	friend void to_json(JSON& json, const Minion* minion);
+	friend void from_json(const JSON& json, Minion* minion);
+	friend void to_json(JSON& json, const std::vector<Minion*>& minions);
+	friend void from_json(const JSON& json, std::vector<Minion*>& minions);
+	friend void to_json(JSON& json, const std::vector<std::vector<Minion*>>& minionsVector);
+	friend void from_json(const JSON& json, std::vector<std::vector<Minion*>>& minionsVector);
 };
 
 #endif 

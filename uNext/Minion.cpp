@@ -230,3 +230,81 @@ void Minion::setMinionState(int minionState) {
 }
 
 bool Minion::getPowerUP() { return true; }
+
+void to_json(JSON& json, const Minion* minion) {
+	json = JSON({
+			minion->minionState,
+			minion->killOtherUnits,
+			minion->iBlockID,
+			minion->fXPos,
+			minion->fYPos,
+			minion->iHitBoxX,
+			minion->iHitBoxY,
+			minion->minionSpawned,
+			minion->collisionOnlyWithPlayer,
+			minion->deadTime,
+			minion->onAnotherMinion,
+			minion->moveDirection,
+			minion->moveSpeed,
+			minion->jumpState,
+			minion->startJumpSpeed,
+			minion->currentJumpSpeed,
+			minion->jumpDistance,
+			minion->currentJumpDistance,
+			minion->currentFallingSpeed
+				});
+}
+
+void from_json(const JSON& json, Minion* minion) {
+	minion->minionState = json[0];
+	minion->killOtherUnits = json[1];
+	minion->iBlockID = json[2];
+	minion->fXPos = json[3];
+	minion->fYPos = json[4];
+	minion->iHitBoxX = json[5];
+	minion->iHitBoxY = json[6];
+	minion->minionSpawned = json[7];
+	minion->collisionOnlyWithPlayer = json[8];
+	minion->deadTime = json[9];
+	minion->onAnotherMinion = json[10];
+	minion->moveDirection = json[11];
+	minion->moveSpeed = json[12];
+	minion->jumpState = json[13];
+	minion->startJumpSpeed = json[14];
+	minion->currentJumpSpeed = json[15];
+	minion->jumpDistance = json[16];
+	minion->currentJumpDistance = json[17];
+	minion->currentFallingSpeed = json[18];
+}
+
+void to_json(JSON& json, const std::vector<Minion*>& minions) {
+	std::vector<JSON> minionsVector;
+	for (auto& minion : minions) {
+		minionsVector.push_back(minion);
+	}
+
+	json = minionsVector;
+}
+
+void from_json(const JSON& json, std::vector<Minion*>& minions) {
+	for (int i = 0; i < minions.size(); i++) {
+		auto minionJSON = json[i];
+		from_json(minionJSON, minions[i]);
+	}
+}
+
+void to_json(JSON& json, const std::vector<std::vector<Minion*>>& minionsVector) {
+	std::vector<JSON> minionsGrid;
+	for (auto& minions : minionsVector) {
+		minionsGrid.push_back(minions);
+	}
+
+	json = minionsGrid;
+}
+
+void from_json(const JSON& json, std::vector<std::vector<Minion*>>& minionsVector) {
+	for (int i = 0; i < minionsVector.size(); i++) {
+		auto minionsJSON = json[i];
+		from_json(minionsJSON, minionsVector[i]);
+	}
+}

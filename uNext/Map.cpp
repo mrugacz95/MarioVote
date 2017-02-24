@@ -10806,6 +10806,8 @@ void to_json(JSON &json, const Map *map) {
 
     json["event"] = map->oEvent;
     json["player"] = map->oPlayer;
+    json["minions"] = map->vMinion;
+    json["coins"] = map->lCoin;
 }
 
 void from_json(const JSON &json, Map *map) {
@@ -10830,6 +10832,6 @@ void from_json(const JSON &json, Map *map) {
 
     from_json(json["event"], map->oEvent);
     from_json(json["player"], map->oPlayer);
-    std::cout << "Closing from_json map, playerXPos = " << map->oPlayer->getXPos() << "\n";
-
+    from_json(json["minions"], map->vMinion);
+    from_json(json["coins"], map->lCoin);
 }
