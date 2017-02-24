@@ -3,6 +3,7 @@
 //
 
 #include "Client.h"
+#include "Server.h"
 
 Client::Client(const char *ipv4Address, uint16_t port) :
     socket(ipv4Address, port)
@@ -66,4 +67,14 @@ void Client::receive(void *buffer, size_t size) {
         buffer += bytesRead;
         size -= bytesRead;
     }
+}
+void Client::sendVoteToServer(const JSON& vote){
+    sendMessage(socket.getDescriptor(), vote);
+}
+bool Client::sendMessage(int descriptor, JSON message) {
+//    auto dumped = message.dump();
+//    auto size = dumped.size();
+//
+//    return (Server::send(socket.getDescriptor(), &size, sizeof(unsigned long)) && send(descriptor, &dumped[0], size));
+    return true;
 }

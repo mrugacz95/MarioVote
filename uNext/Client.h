@@ -20,7 +20,7 @@ class Client {
 
     unsigned long receiveSizeOfNextMessage();
     void receive(void *buffer, size_t size);
-
+    bool sendMessage(int descriptor, JSON message);
 public:
     Client(const char *ipv4Address, const uint16_t port);
     ~Client();
@@ -30,6 +30,8 @@ public:
     bool isGamePaused();
 
     bool isSynchronized = false;
+
+    void sendVoteToServer(const JSON &vote);
 };
 
 

@@ -96,7 +96,17 @@ void CCore::mainLoop() {
 
 		Input();
 		MouseInput();
-
+        if(client && CCFG::getMM()->currentGameState == MenuManager::gameState::eGame){
+            JSON clientInput;
+            clientInput["direction"] = firstDir;
+            clientInput["A"] = keyAPressed;
+            clientInput["S"] = keyS;
+            clientInput["D"] = keyDPressed;
+            clientInput["shift"] = keyShift;
+            clientInput["space"] = CCFG::keySpace;
+            clientInput["isPaused"] = CCFG::getMM()->currentGameState == MenuManager::gameState::ePause;
+            client->sendVoteToServer(clientInput);
+        }
 		Update();
 
 		if (server && server->isStarted()) {
